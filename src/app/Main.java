@@ -1,10 +1,7 @@
 package app;
 
 import java.io.BufferedReader;
-
-// import algo.*;
-// import datastruct.*;
-
+import java.util.*;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -14,25 +11,46 @@ import java.util.TreeMap;
 
 import com.google.gson.*;
 
+import Utils.LatLongComparison;
+
 public class Main {
     public static void main(String[] args) {
         // start here
         Gson gson = new Gson();
-        Path path = Paths.get("./yelp_academic_dataset_business.json");
+
+        // Make sure your yelp dataset is located within the same directory as your project
+        // but not within your project file
+        Path path = Paths.get("../yelp_academic_dataset_business.json");
+
+        Scanner sc = new Scanner(System.in);
         Map<String, Restaurant> allRestaurant = new TreeMap<>();
+
+        System.out.print("Acceptable distance(Km) --->  ");
+        double accetableRange = sc.nextDouble();
+        sc.nextLine();
+
+        // Hard code your current location's latitude and longitude here
+        double currLat = 28.5444303;
+        double currLong = 81.3516058;
 
         try (BufferedReader reader = Files.newBufferedReader(path)) {
             String line;
+            long time = System.currentTimeMillis();
 
             while ((line = reader.readLine()) != null) {
                 Restaurant restaurant = gson.fromJson(line, Restaurant.class);
-                allRestaurant.put(restaurant.getName(), restaurant);
-                // System.out.println(restaurant.toString());
+                if(LatLongComparison.distanceDifference(currLat, currLong, restaurant.getLatitude(), restaurant.getLongitude()) <= accetableRange) {
+                    allRestaurant.put(restaurant.getName(), restaurant);
+                    System.out.println(restaurant.toString());
+                }
+
                 // System.out.println(restaurant.getHours().get("Monday"));
                 // break;
             }
 
+            System.out.println("Total time consumed to parse the entire dataset = " + (System.currentTimeMillis() - time)/1000.0);
             System.out.println(allRestaurant.size());
+
         } catch (IOException e) {
             e.getStackTrace();
         }

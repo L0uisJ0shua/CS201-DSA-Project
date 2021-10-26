@@ -65,9 +65,12 @@ public class Main {
                     + (System.currentTimeMillis() - time) / 1000.0);
             System.out.println(allRestaurant.size());
 
+            double start_time = System.currentTimeMillis();
             BucketSort b = new BucketSort();
             Restaurant r = b.bucketSortandGet(allRestaurant);
             System.out.println(r.toString());
+            System.out.println("Total Time take to sort = " + String.format("%.10f", (System.currentTimeMillis() - start_time)/1000));
+            
             
 
         } catch (IOException e) {

@@ -17,9 +17,9 @@ public class BucketSort {
 
         // 1) Create n empty buckets
         @SuppressWarnings("unchecked")
-        Vector<Restaurant>[] buckets = new Vector[5];
+        Vector<Restaurant>[] buckets = new Vector[6];
 
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 6; i++) {
             buckets[i] = new Vector<Restaurant>();
         }
 
@@ -30,13 +30,13 @@ public class BucketSort {
         }
 
         // 3) Sort individual buckets
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 6; i++) {
             sortHelper(buckets[i]);
         }
 
         // 4) Concatenate all buckets into arr[]
         int index = 0;
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 6; i++) {
             for (int j = 0; j < buckets[i].size(); j++) {
                 array[index++] = buckets[i].get(j);
             }
@@ -50,7 +50,6 @@ public class BucketSort {
         for (int i = 1; i < vec.size(); i++) {
                 int j = i - 1;
                 Restaurant key = vec.get(i);
-                System.out.println(i);
                 while (j >= 0 && !vec.get(j).compareRating(key)) {
                     Restaurant temp = vec.remove(j+1);
                     vec.add(j, temp);

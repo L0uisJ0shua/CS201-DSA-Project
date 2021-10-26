@@ -78,4 +78,11 @@ public class Restaurant {
         this.hours = hours;
     }
 
+    public boolean compareRating(Restaurant r2) {
+        if (this.getStars() >= r2.getStars()) {
+            return true;
+        } 
+        return false;
+    }
+
 }

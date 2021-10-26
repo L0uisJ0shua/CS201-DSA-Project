@@ -12,6 +12,7 @@ import java.util.TreeMap;
 import com.google.gson.*;
 
 import Utils.LatLongComparison;
+import algo.BucketSort;
 
 public class Main {
     public static void main(String[] args) {
@@ -52,12 +53,10 @@ public class Main {
 
             while ((line = reader.readLine()) != null) {
                 Restaurant restaurant = gson.fromJson(line, Restaurant.class);
-                if (LatLongComparison.distanceDifference(currLat, currLong, restaurant.getLatitude(),
-                        restaurant.getLongitude()) <= acceptableRange) {
+                if (LatLongComparison.distanceDifference(currLat, currLong, restaurant.getLatitude(), restaurant.getLongitude()) <= acceptableRange) {
                     allRestaurant.put(restaurant.getName(), restaurant);
                     System.out.println(restaurant.toString());
                 }
-
                 // System.out.println(restaurant.getHours().get("Monday"));
                 // break;
             }
@@ -65,6 +64,11 @@ public class Main {
             System.out.println("Total time consumed to parse the entire dataset = "
                     + (System.currentTimeMillis() - time) / 1000.0);
             System.out.println(allRestaurant.size());
+
+            BucketSort b = new BucketSort();
+            Restaurant r = b.bucketSortandGet(allRestaurant);
+            System.out.println(r.toString());
+            
 
         } catch (IOException e) {
             e.getStackTrace();

@@ -15,3 +15,6 @@
 
 # json data file
 *.json
+
+# For mac user
+.DS_Store

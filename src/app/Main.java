@@ -18,28 +18,42 @@ public class Main {
         // start here
         Gson gson = new Gson();
 
-        // Make sure your yelp dataset is located within the same directory as your project
+        // Make sure your yelp dataset is located within the same directory as your
+        // project
         // but not within your project file
-        Path path = Paths.get("../yelp_academic_dataset_business.json");
+        Path path = Paths.get(System.getProperty("user.dir") + "/yelp_academic_dataset_business.json");
 
         Scanner sc = new Scanner(System.in);
         Map<String, Restaurant> allRestaurant = new TreeMap<>();
 
         System.out.print("Acceptable distance(Km) --->  ");
-        double accetableRange = sc.nextDouble();
+        double acceptableRange = sc.nextDouble();
         sc.nextLine();
-
         // Hard code your current location's latitude and longitude here
-        double currLat = 28.5444303;
-        double currLong = 81.3516058;
+        System.out.print("We recommend this: 39.778259,-105.417931. Use this? [Y/n] ");
+        String res = sc.nextLine();
+        double currLat;
+        double currLong;
+        System.out.println(res);
+        if (res.equals("n") || res.equals("N")) {
+            System.out.print("Your current location latitude ---> ");
+            currLat = sc.nextDouble();
 
+            System.out.print("Your current location longtitude ---> ");
+            currLong = sc.nextDouble();
+            sc.nextLine();
+        } else {
+            currLat = 39.778259;
+            currLong = -105.417931;
+        }
         try (BufferedReader reader = Files.newBufferedReader(path)) {
             String line;
             long time = System.currentTimeMillis();
 
             while ((line = reader.readLine()) != null) {
                 Restaurant restaurant = gson.fromJson(line, Restaurant.class);
-                if(LatLongComparison.distanceDifference(currLat, currLong, restaurant.getLatitude(), restaurant.getLongitude()) <= accetableRange) {
+                if (LatLongComparison.distanceDifference(currLat, currLong, restaurant.getLatitude(),
+                        restaurant.getLongitude()) <= acceptableRange) {
                     allRestaurant.put(restaurant.getName(), restaurant);
                     System.out.println(restaurant.toString());
                 }
@@ -48,7 +62,8 @@ public class Main {
                 // break;
             }
 
-            System.out.println("Total time consumed to parse the entire dataset = " + (System.currentTimeMillis() - time)/1000.0);
+            System.out.println("Total time consumed to parse the entire dataset = "
+                    + (System.currentTimeMillis() - time) / 1000.0);
             System.out.println(allRestaurant.size());
 
         } catch (IOException e) {

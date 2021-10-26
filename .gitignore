@@ -13,3 +13,5 @@
 *.tar.gz
 *.rar
 
+# json data file
+*.json

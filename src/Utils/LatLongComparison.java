@@ -1,7 +1,6 @@
 package Utils;
 
-import java.util.*;
-import java.lang.*;
+import java.lang.Math;
 
 public class LatLongComparison {
     

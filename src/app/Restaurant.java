@@ -1,6 +1,7 @@
 package app;
 
 import java.util.*;
+import Utils.LatLongComparison;
 
 public class Restaurant {
     private float stars;
@@ -83,6 +84,10 @@ public class Restaurant {
             return true;
         } 
         return false;
+    }
+
+    public double calculateDistanceFrom(double origin_lat, double origin_long) {
+        return LatLongComparison.distanceDifference(origin_lat, origin_long, this.latitude, this.longitude);
     }
 
 }

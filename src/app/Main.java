@@ -65,11 +65,16 @@ public class Main {
                     + (System.currentTimeMillis() - time) / 1000.0);
             System.out.println(allRestaurant.size());
 
+            // Bubble Sort
+            System.out.println("======= Commencing Bubble Sort Test ========");
+
             double start_time = System.currentTimeMillis();
             BucketSort b = new BucketSort();
-            Restaurant r = b.bucketSortandGet(allRestaurant);
-            System.out.println(r.toString());
+            Restaurant[] top_rated = b.bucketSortStars(allRestaurant);
+            Restaurant top_and_close = b.bubbleSortDistAndGet(top_rated, currLat, currLong);
+            System.out.println(top_and_close.toString());
             System.out.println("Total Time take to sort = " + String.format("%.10f", (System.currentTimeMillis() - start_time)/1000));
+            System.out.println("\n====== End of Bubble Sort Run ========");
             
             
 

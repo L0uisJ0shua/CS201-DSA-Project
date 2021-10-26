@@ -7,7 +7,7 @@ import app.Restaurant;
 
 public class BucketSort {
 
-    public Restaurant bucketSortandGet(Map<String, Restaurant> allRestaurants) {
+    public Restaurant[] bucketSortStars(Map<String, Restaurant> allRestaurants) {
         int n = allRestaurants.size();
         
         if (n <= 0)
@@ -41,8 +41,51 @@ public class BucketSort {
                 array[index++] = buckets[i].get(j);
             }
         }
+
+        float top_rating = array[array.length-1].getStars();
+        int counter = array.length-1;
+        while (array[counter].getStars() == top_rating) {
+            counter--;
+        }
+
+        return Arrays.copyOfRange(array, counter, array.length-1);
+    }
+
+    public Restaurant bubbleSortDistAndGet(Restaurant[] array, double origin_lat, double origin_long) {
+        int n = array.length;
+
+        if (n <= 0)
+            return null;
+
+        // 1) Create n empty buckets
+        @SuppressWarnings("unchecked")
+        Vector<Restaurant>[] buckets = new Vector[10000];
+
+        for (int i = 0; i < 10000; i++) {
+            buckets[i] = new Vector<Restaurant>();
+        }
+
+        // 2) Put array elements in different buckets
+        for (int i = 0; i < n; i++) {
+            double dist = array[i].calculateDistanceFrom(origin_lat, origin_long);
+            buckets[(int) dist].add(array[i]);
+        }
+
+        // 3) Sort individual buckets
+        for (int i = 0; i < 10000; i++) {
+            sortHelper(buckets[i]);
+        }
+
+        // 4) Concatenate all buckets into arr[]
+        int index = 0;
+        for (int i = 0; i < 10000; i++) {
+            for (int j = 0; j < buckets[i].size(); j++) {
+                array[index++] = buckets[i].get(j);
+            }
+        }
+
+        return array[0];
         
-        return array[array.length-1];
     }
 
     // Insertion Sort

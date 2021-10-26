@@ -3,7 +3,7 @@ package app;
 import java.util.*;
 
 public class Restaurant {
-    private int stars;
+    private float stars;
     private String name;
     private double latitude;
     private double longitude;
@@ -14,7 +14,7 @@ public class Restaurant {
 
     }
 
-    public Restaurant(int stars, String name, double latitude, double longitude, String categories,
+    public Restaurant(float stars, String name, double latitude, double longitude, String categories,
             Map<String, String> hours) {
         this.stars = stars;
         this.name = name;
@@ -30,11 +30,11 @@ public class Restaurant {
                 + longitude + ", name=" + name + ", stars=" + stars + "]";
     }
 
-    public int getStars() {
+    public float getStars() {
         return stars;
     }
 
-    public void setStars(int stars) {
+    public void setStars(float stars) {
         this.stars = stars;
     }
 

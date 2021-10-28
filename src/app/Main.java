@@ -91,6 +91,8 @@ public class Main {
             
             // Merge Sorting
             performMergeSort(allRestaurant, currLat, currLong);
+
+            //Quick Sorting
             
         } catch (IOException e) {
             e.getStackTrace();

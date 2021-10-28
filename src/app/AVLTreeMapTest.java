@@ -6,19 +6,19 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Map;
-import java.util.TreeMap;
 
 import com.google.gson.*;
 
 import Utils.LatLongComparison;
 import algo.BucketSort;
+import datastruct.AVLTreeMap;
 
-public class Main {
+public class AVLTreeMapTest {
     public static void main(String[] args) {
-
-        System.out.println("===== Now Running Default TreeMap Test =====");
-
+        System.out.println("%n");
+        
+        System.out.println("===== Now Running AVL TreeMap Test =====");
+        
         // start here
         Gson gson = new Gson();
 
@@ -28,7 +28,7 @@ public class Main {
         Path path = Paths.get(System.getProperty("user.dir") + "/yelp_academic_dataset_business.json");
 
         Scanner sc = new Scanner(System.in);
-        Map<String, Restaurant> allRestaurant = new TreeMap<>();
+        AVLTreeMap<String, Restaurant> allRestaurant = new AVLTreeMap<>();
 
         System.out.print("Acceptable distance(Km) --->  ");
         double acceptableRange = sc.nextDouble();
@@ -69,23 +69,22 @@ public class Main {
             System.out.println(allRestaurant.size());
 
             // Bubble Sort
-            System.out.println("======= Commencing Bubble Sort Test ========");
+            // System.out.println("======= Commencing Bubble Sort Test ========");
 
-            double start_time = System.currentTimeMillis();
-            BucketSort b = new BucketSort();
-            Restaurant[] top_rated = b.bucketSortStars(allRestaurant);
-            Restaurant top_and_close = b.bubbleSortDistAndGet(top_rated, currLat, currLong);
-            System.out.println(top_and_close.toString());
-            System.out.println("Total Time take to sort = " + String.format("%.10f", (System.currentTimeMillis() - start_time)/1000));
-            System.out.println("\n====== End of Bubble Sort Run ========");
+            // double start_time = System.currentTimeMillis();
+            // BucketSort b = new BucketSort();
+            // Restaurant[] top_rated = b.bucketSortStars(allRestaurant);
+            // Restaurant top_and_close = b.bubbleSortDistAndGet(top_rated, currLat, currLong);
+            // System.out.println(top_and_close.toString());
+            // System.out.println("Total Time take to sort = " + String.format("%.10f", (System.currentTimeMillis() - start_time)/1000));
+            // System.out.println("\n====== End of Bubble Sort Run ========");
             
             
-
         } catch (IOException e) {
             e.getStackTrace();
         }
 
-        System.out.println("===== End of Default TreeMap Test =====");
+        System.out.println("===== End of AVL TreeMap Test =====");
 
     }
 

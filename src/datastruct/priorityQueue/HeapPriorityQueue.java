@@ -87,7 +87,7 @@ public class HeapPriorityQueue<K, V> extends AbstractPriorityQueue<K, V> {
   protected void upheap(int j) {
     while (j > 0) { // continue until reaching root (or break statement)
       int p = parent(j);
-      if (compare(heap.get(j), heap.get(p)) >= 0)
+      if (compare(heap.get(j), heap.get(p)) <= 0)
         break; // heap property verified
       swap(j, p);
       j = p; // continue from the parent's location
@@ -100,16 +100,16 @@ public class HeapPriorityQueue<K, V> extends AbstractPriorityQueue<K, V> {
   protected void downheap(int j) {
     while (hasLeft(j)) { // continue to bottom (or break statement)
       int leftIndex = left(j);
-      int smallChildIndex = leftIndex; // although right may be smaller
+      int largeChildIndex = leftIndex; // although right may be larger
       if (hasRight(j)) {
         int rightIndex = right(j);
-        if (compare(heap.get(leftIndex), heap.get(rightIndex)) > 0)
-          smallChildIndex = rightIndex; // right child is smaller
+        if (compare(heap.get(leftIndex), heap.get(rightIndex)) < 0)
+          largeChildIndex = rightIndex; // right child is larger
       }
-      if (compare(heap.get(smallChildIndex), heap.get(j)) >= 0)
+      if (compare(heap.get(largeChildIndex), heap.get(j)) <= 0)
         break; // heap property has been restored
-      swap(j, smallChildIndex);
-      j = smallChildIndex; // continue at position of the child
+      swap(j, largeChildIndex);
+      j = largeChildIndex; // continue at position of the child
     }
   }
 

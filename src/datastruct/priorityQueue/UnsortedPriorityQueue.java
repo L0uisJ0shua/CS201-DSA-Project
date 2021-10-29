@@ -65,6 +65,14 @@ public class UnsortedPriorityQueue<K, V> extends AbstractPriorityQueue<K, V> {
     return small;
   }
 
+  private Position<Entry<K, V>> findMax() { // only called when nonempty
+    Position<Entry<K, V>> large = list.first();
+    for (Position<Entry<K, V>> walk : list.positions())
+      if (compare(walk.getElement(), large.getElement()) > 0)
+        large = walk; // found an even smaller key
+    return large;
+  }
+
   /**
    * Inserts a key-value pair and returns the entry created.
    * 
@@ -93,6 +101,12 @@ public class UnsortedPriorityQueue<K, V> extends AbstractPriorityQueue<K, V> {
     return findMin().getElement();
   }
 
+  public Entry<K, V> max() {
+    if (list.isEmpty())
+      return null;
+    return findMax().getElement();
+  }
+
   /**
    * Removes and returns an entry with minimal key.
    * 
@@ -103,6 +117,12 @@ public class UnsortedPriorityQueue<K, V> extends AbstractPriorityQueue<K, V> {
     if (list.isEmpty())
       return null;
     return list.remove(findMin());
+  }
+
+  public Entry<K, V> removeMax() {
+    if (list.isEmpty())
+      return null;
+    return list.remove(findMax());
   }
 
   /**

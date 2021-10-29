@@ -86,6 +86,18 @@ public class SortedPriorityQueue<K, V> extends AbstractPriorityQueue<K, V> {
     return list.first().getElement();
   }
 
+  public Entry<K, V> max() {
+    if (list.isEmpty())
+      return null;
+    return list.last().getElement();
+  }
+
+  public Entry<K, V> removeMax() {
+    if (list.isEmpty())
+      return null;
+    return list.remove(list.last());
+  }
+
   /**
    * Removes and returns an entry with minimal key.
    * 

@@ -46,7 +46,7 @@ public class BubbleSortTest {
 
             System.out.println(String.format("Total Time for both = %.10fs", (sort_2_end - start_time) / 1000));
         } else {
-            System.out.println(top_rated[0].toString());
+            System.out.println(top_rated[top_rated.length - 1].toString());
         }
 
         System.out.println("====== End of Bubble Sort Test ========");

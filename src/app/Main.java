@@ -16,6 +16,7 @@ public class Main {
         FileParser fileParser = new FileParser(allRestaurants);
         fileParser.retrieveData(true, console);
 
+        // First perform a test to only sort review. Then sort review then distance
         BubbleSortTest test = new BubbleSortTest(fileParser, console);
         test.performSortUsingRating(false);
 

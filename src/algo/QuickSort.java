@@ -1,6 +1,5 @@
 package algo;
 
-import java.util.*;
 import app.Restaurant;
 
 public class QuickSort {
@@ -17,7 +16,7 @@ public class QuickSort {
     array, and places all smaller (smaller than pivot)
     to left of pivot and all greater elements to right
     of pivot */
-    static int partition(Restaurant[] arr, int low, int high)
+    public static int partitionByRating(Restaurant[] arr, int low, int high, double currLat, double currLong)
     {
         
         // pivot
@@ -33,7 +32,36 @@ public class QuickSort {
             
             // If current element is smaller 
             // than the pivot
-            if (arr[j].getStars() < pivot.getStars()) 
+            if (arr[j].getStars() > pivot.getStars() || (arr[j].getStars() == pivot.getStars() && arr[j].calculateDistanceFrom(currLat, currLong) < pivot.calculateDistanceFrom(currLat, currLong))) 
+            {
+                
+                // Increment index of 
+                // smaller element
+                i++; 
+                swap(arr, i, j);
+            }
+        }
+        swap(arr, i + 1, high);
+        return (i + 1);
+    }
+
+    public static int partitionByDistance(Restaurant[] arr, int low, int high, double currLat, double currLong)
+    {
+        
+        // pivot
+        Restaurant pivot = arr[high]; 
+        
+        // Index of smaller element and
+        // indicates the right position
+        // of pivot found so far
+        int i = (low - 1); 
+    
+        for(int j = low; j <= high - 1; j++)
+        {
+            
+            // If current element is smaller 
+            // than the pivot
+            if (arr[j].calculateDistanceFrom(currLat, currLong) < pivot.calculateDistanceFrom(currLat, currLong))
             {
                 
                 // Increment index of 
@@ -51,19 +79,35 @@ public class QuickSort {
             low --> Starting index,
             high --> Ending index
     */
-    static void quickSort(Restaurant[] arr, int low, int high)
+    public static void quickSortByRating(Restaurant[] arr, int low, int high, double currLat, double currLong)
     {
         if (low < high) 
         {
         
             // pi is partitioning index, arr[p]
             // is now at right place 
-            int pi = partition(arr, low, high);
+            int pi = partitionByRating(arr, low, high, currLat, currLong);
 
             // Separately sort elements before
             // partition and after partition
-            quickSort(arr, low, pi - 1);
-            quickSort(arr, pi + 1, high);
+            quickSortByRating(arr, low, pi - 1, currLat, currLong);
+            quickSortByRating(arr, pi + 1, high, currLat, currLong);
+        }
+    }
+
+    public static void quickSortByDistance(Restaurant[] arr, int low, int high, double currLat, double currLong)
+    {
+        if (low < high) 
+        {
+        
+            // pi is partitioning index, arr[p]
+            // is now at right place 
+            int pi = partitionByDistance(arr, low, high, currLat, currLong);
+
+            // Separately sort elements before
+            // partition and after partition
+            quickSortByDistance(arr, low, pi - 1, currLat, currLong);
+            quickSortByDistance(arr, pi + 1, high, currLat, currLong);
         }
     }
 }

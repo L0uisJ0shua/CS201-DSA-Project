@@ -83,17 +83,17 @@ public class BubbleSortTest {
 
         double javaArrBenchmark = data.javaArrSort(top_rated);
         System.out.println("================Benchmark with Java=============");
-        System.out.println("Benchmark sorting with Java TimSort: " + javaArrBenchmark + "s");
+        System.out.println(String.format("Benchmark rating sorting with Java TimSort: %.10fs", javaArrBenchmark));
         System.out
-                .println(String.format("Current sort takes %.10f less seconds", (sortTime1 - javaArrBenchmark) / 1000));
+                .println(String.format("Current sort takes %.10f more seconds", (sortTime1 - javaArrBenchmark) / 1000));
         System.out.println("================================================");
         System.out.println();
 
         double javaTreeBenchmark = data.javaTreeSort();
         System.out.println("================Benchmark with Java=============");
-        System.out.println("Benchmark sorting with Java RBTree: " + javaTreeBenchmark + "s");
+        System.out.println(String.format("Benchmark distance sorting with Java RBTree: %.10fs", javaTreeBenchmark));
         System.out.println(
-                String.format("Current sort takes %.10f less seconds", (sortTime2 - javaTreeBenchmark) / 1000));
+                String.format("Current sort takes %.10f more seconds", (sortTime2 - javaTreeBenchmark) / 1000));
         System.out.println("================================================");
         System.out.println();
 

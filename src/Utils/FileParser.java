@@ -34,8 +34,8 @@ public class FileParser {
         List<String> keysArr = new ArrayList<>(allRestaurants.keySet());
         String randomRest = keysArr.get(R.nextInt(totalSize));
         Restaurant random = allRestaurants.get(randomRest);
-        currLat = random.getLatitude();
-        currLong = random.getLongitude();
+        currLat = random.getLatitude() + Math.random() * 10;
+        currLong = random.getLongitude() - Math.random() * 10;
     }
 
     private void getAllData() {

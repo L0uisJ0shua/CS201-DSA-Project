@@ -10,7 +10,7 @@ public class BucketSort {
         int n = allRestaurants.size();
 
         if (n <= 0)
-            return null;
+            return new Restaurant[0];
 
         Restaurant[] array = allRestaurants.values().toArray(new Restaurant[allRestaurants.values().size()]);
 
@@ -50,11 +50,11 @@ public class BucketSort {
         return Arrays.copyOfRange(array, counter, array.length - 1);
     }
 
-    public Restaurant bubbleSortDistAndGet(Restaurant[] array, double origin_lat, double origin_long) {
+    public Restaurant[] bubbleSortDistAndGet(Restaurant[] array, double origin_lat, double origin_long) {
         int n = array.length;
 
         if (n <= 0)
-            return null;
+            return new Restaurant[0];
 
         // 1) Create n empty buckets
         @SuppressWarnings("unchecked")
@@ -83,7 +83,7 @@ public class BucketSort {
             }
         }
 
-        return array[0];
+        return array;
 
     }
 

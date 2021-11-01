@@ -7,21 +7,36 @@ import Utils.*;
 public class Main {
     public static void main(String[] args) {
 
-        // start here
-        Console console = new Console();
-        console.getUserData();
-
         Map<String, Restaurant> allRestaurants = new HashMap<>();
-
         FileParser fileParser = new FileParser(allRestaurants);
-        fileParser.retrieveData(true, console);
 
-        // First perform a test to only sort review. Then sort review then distance
-        BubbleSortTest test = new BubbleSortTest(fileParser, console);
-        test.performSortUsingRating(false);
+        // start by running a test with a predefined location
+        boolean isRandomised = false;
+        System.out.println("Running initial test");
+        runDistanceTest(isRandomised, fileParser);
 
-        test.performSortUsingRating(true);
+        // Run 3 more randomised tests with randomised location
+        isRandomised = true;
+        for (int i = 0; i < 3; i++) {
+            System.out.println("Running randomised tests");
+            runDistanceTest(isRandomised, fileParser);
+        }
 
+    }
+
+    private static void runDistanceTest(boolean randomise, FileParser fileParser) {
+        if (randomise) {
+            fileParser.randomise();
+        }
+
+        int[] distanceTests = { 10, 100, 500, 1000, 1500 };
+        for (int i : distanceTests) {
+            fileParser.retrieveData(true, i);
+
+            // First perform a test to only sort review. Then sort review then distance
+            BubbleSortTest test = new BubbleSortTest(fileParser);
+            test.runTests();
+        }
     }
 
 }

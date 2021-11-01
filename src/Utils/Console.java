@@ -3,14 +3,14 @@ package Utils;
 import java.util.*;
 
 public class Console {
-    private double acceptableRange;
+    private double acceptableRange = 5000;
     private double currLat = 39.778259;
     private double currLong = -105.417931;
 
     public void getUserData() {
         Scanner sc = new Scanner(System.in);
 
-        System.out.print("Acceptable distance(Km) --->  ");
+        System.out.print("Acceptable distance(Km) ---> ");
         acceptableRange = sc.nextDouble();
         sc.nextLine();
 
@@ -27,6 +27,10 @@ public class Console {
             currLong = sc.nextDouble();
             sc.nextLine();
         }
+    }
+
+    public void randomise() {
+
     }
 
     public double getAcceptableRange() {

@@ -10,21 +10,19 @@ import Utils.*;
 public class BubbleSortTest {
 
     private FileParser data;
-    private Console input;
     private BucketSort b;
 
-    public BubbleSortTest(FileParser data, Console input) {
+    public BubbleSortTest(FileParser data) {
         this.data = data;
-        this.input = input;
         b = new BucketSort();
     }
 
-    public void performSortUsingRating(boolean sortDistance) {
+    private void performSortUsingRating(boolean sortDistance) {
         System.out.println();
         System.out.println("======= Commencing Bubble Sort Test ========");
         double start_time = System.currentTimeMillis();
 
-        Map<String, Restaurant> allRestaurant = data.getAllRestaurants();
+        Map<String, Restaurant> allRestaurant = data.getFilteredRestaurants();
 
         Restaurant[] top_rated = b.bucketSortStars(allRestaurant);
 
@@ -46,7 +44,12 @@ public class BubbleSortTest {
 
             System.out.println(String.format("Total Time for both = %.10fs", (sort_2_end - start_time) / 1000));
         } else {
-            System.out.println(top_rated[top_rated.length - 1].toString());
+            if (top_rated.length == 0) {
+                System.out.println("No restaurant found");
+                return;
+            } else {
+                System.out.println(top_rated[top_rated.length - 1].toString());
+            }
         }
 
         System.out.println("====== End of Bubble Sort Test ========");
@@ -54,10 +57,20 @@ public class BubbleSortTest {
     }
 
     private void performSortUsingRatingAndDistance(Restaurant[] top_rated) {
-        double currLat = input.getCurrLat();
-        double currLong = input.getCurrLong();
+        if (top_rated.length == 0) {
+            System.out.println("No restaurant found");
+            return;
+        }
 
-        Restaurant top_and_close = b.bubbleSortDistAndGet(top_rated, currLat, currLong);
-        System.out.println(top_and_close.toString());
+        double currLat = data.getCurrLat();
+        double currLong = data.getCurrLong();
+
+        Restaurant[] top_and_close = b.bubbleSortDistAndGet(top_rated, currLat, currLong);
+        System.out.println(top_and_close[0].toString());
+    }
+
+    public void runTests() {
+        performSortUsingRating(false);
+        performSortUsingRating(true);
     }
 }

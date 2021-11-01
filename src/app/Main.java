@@ -9,25 +9,31 @@ public class Main {
 
         Map<String, Restaurant> allRestaurants = new HashMap<>();
         FileParser fileParser = new FileParser(allRestaurants);
-        AbstractTest test = new BubbleSortTest(fileParser);
 
         // start by running a test with a predefined location
+        AbstractTest test = new BubbleSortTest(fileParser);
         boolean isRandomised = false;
-        System.out.println("Running initial test");
-        runDistanceTest(isRandomised, fileParser, test);
+        // System.out.println("Running initial test");
+        // runDistanceTest(isRandomised, fileParser, test);
 
-        // Run 3 more randomised tests with randomised location
-        isRandomised = true;
-        for (int i = 0; i < 3; i++) {
-            System.out.println("Running randomised tests");
-            runDistanceTest(isRandomised, fileParser, test);
-        }
+        // // Run 3 more randomised tests with randomised location
+        // isRandomised = true;
+        // for (int i = 0; i < 3; i++) {
+        // System.out.println("Running randomised tests");
+        // runDistanceTest(isRandomised, fileParser, test);
+        // }
+
+        test = new HeapSortTest(fileParser);
+        isRandomised = false;
+        runDistanceTest(isRandomised, fileParser, test);
 
     }
 
     private static void runDistanceTest(boolean randomise, FileParser fileParser, AbstractTest test) {
         if (randomise) {
             fileParser.randomise();
+        } else {
+            fileParser.resetValues();
         }
 
         int[] distanceTests = { 10, 100, 500, 1000, 1500 };

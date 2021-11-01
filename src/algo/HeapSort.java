@@ -1,17 +1,24 @@
 package algo;
 
-import datastruct.priorityQueue.*;
+import java.util.*;
+import app.*;
 
 public class HeapSort {
-  public static <E> void pqSort(PositionalList<E> S, PriorityQueue<E, ?> P) {
+  public Restaurant[] pqSortDistance(Map<String, Restaurant> S, double origin_lat, double origin_long) {
     int n = S.size();
-    for (int j = 0; j < n; j++) {
-      E element = S.remove(S.first());
-      P.insert(element, null); // element is key; null value
+
+    PriorityQueue<Map.Entry<Double, Restaurant>> queue = new PriorityQueue<>((a, b) -> (int) (a.getKey() - b.getKey()));
+
+    for (Restaurant restaurant : S.values()) {
+      Double dist = restaurant.calculateDistanceFrom(origin_lat, origin_long);
+      queue.add(new AbstractMap.SimpleEntry<Double, Restaurant>(dist, restaurant));
     }
+
+    Restaurant[] sortedRestaurant = new Restaurant[n];
     for (int j = 0; j < n; j++) {
-      E element = P.removeMin().getKey();
-      S.addLast(element); // the smallest key in P is next placed in S
+      sortedRestaurant[j] = queue.remove().getValue();
     }
+
+    return sortedRestaurant;
   }
 }

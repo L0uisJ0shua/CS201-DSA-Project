@@ -38,6 +38,11 @@ public class FileParser {
         currLong = random.getLongitude() - Math.random() * 10;
     }
 
+    public void resetValues() {
+        currLat = 39.778259;
+        currLong = -105.417931;
+    }
+
     private void getAllData() {
         Gson gson = new Gson();
         Path path = Paths.get(System.getProperty("user.dir") + "/yelp_academic_dataset_business.json");

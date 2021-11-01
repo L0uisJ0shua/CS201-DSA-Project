@@ -5,26 +5,25 @@ import algo.BucketSort;
 
 import java.util.Map;
 
-import Utils.*;
-
 public class BubbleSortTest {
 
     private FileParser data;
     private BucketSort b;
+    private Restaurant[] top_rated;
 
     public BubbleSortTest(FileParser data) {
         this.data = data;
         b = new BucketSort();
     }
 
-    private void performSortUsingRating(boolean sortDistance) {
+    private double performSortUsingRating(boolean sortDistance) {
         System.out.println();
         System.out.println("======= Commencing Bubble Sort Test ========");
         double start_time = System.currentTimeMillis();
 
         Map<String, Restaurant> allRestaurant = data.getFilteredRestaurants();
 
-        Restaurant[] top_rated = b.bucketSortStars(allRestaurant);
+        top_rated = b.bucketSortStars(allRestaurant);
 
         double sort_1_end = System.currentTimeMillis();
 
@@ -35,18 +34,19 @@ public class BubbleSortTest {
          * is because bubble sort is stable, meaning the sort will honor the previous
          * sort order, allowing for sort chaining
          */
+        double res = sort_1_end - start_time;
         if (sortDistance) {
-            performSortUsingRatingAndDistance(top_rated);
+            performSortUsingRatingAndDistance();
 
             double sort_2_end = System.currentTimeMillis();
-            System.out.println(
-                    String.format("Total Time take to sort distance = %.10fs", (sort_2_end - sort_1_end) / 1000));
+            res = sort_2_end - sort_1_end;
+            System.out.println(String.format("Total Time take to sort distance = %.10fs", res / 1000));
 
             System.out.println(String.format("Total Time for both = %.10fs", (sort_2_end - start_time) / 1000));
         } else {
             if (top_rated.length == 0) {
                 System.out.println("No restaurant found");
-                return;
+                return 0;
             } else {
                 System.out.println(top_rated[top_rated.length - 1].toString());
             }
@@ -54,9 +54,11 @@ public class BubbleSortTest {
 
         System.out.println("====== End of Bubble Sort Test ========");
         System.out.println();
+
+        return res;
     }
 
-    private void performSortUsingRatingAndDistance(Restaurant[] top_rated) {
+    private void performSortUsingRatingAndDistance() {
         if (top_rated.length == 0) {
             System.out.println("No restaurant found");
             return;
@@ -70,7 +72,31 @@ public class BubbleSortTest {
     }
 
     public void runTests() {
-        performSortUsingRating(false);
-        performSortUsingRating(true);
+        double sortTime1 = performSortUsingRating(false);
+        double sortTime2 = performSortUsingRating(true);
+
+        // iterate through entire data set to find the top x
+
+        if (data.getFilteredRestaurants().size() == 0) {
+            return;
+        }
+
+        double javaArrBenchmark = data.javaArrSort(top_rated);
+        System.out.println("================Benchmark with Java=============");
+        System.out.println("Benchmark sorting with Java TimSort: " + javaArrBenchmark + "s");
+        System.out
+                .println(String.format("Current sort takes %.10f less seconds", (sortTime1 - javaArrBenchmark) / 1000));
+        System.out.println("================================================");
+        System.out.println();
+
+        double javaTreeBenchmark = data.javaTreeSort();
+        System.out.println("================Benchmark with Java=============");
+        System.out.println("Benchmark sorting with Java RBTree: " + javaTreeBenchmark + "s");
+        System.out.println(
+                String.format("Current sort takes %.10f less seconds", (sortTime2 - javaTreeBenchmark) / 1000));
+        System.out.println("================================================");
+        System.out.println();
+
     }
+
 }

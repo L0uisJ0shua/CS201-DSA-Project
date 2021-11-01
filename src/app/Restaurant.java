@@ -3,7 +3,7 @@ package app;
 import java.util.*;
 import Utils.LatLongComparison;
 
-public class Restaurant {
+public class Restaurant implements Comparable<Restaurant> {
     private float stars;
     private String name;
     private double latitude;
@@ -82,12 +82,17 @@ public class Restaurant {
     public boolean compareRating(Restaurant r2) {
         if (this.getStars() >= r2.getStars()) {
             return true;
-        } 
+        }
         return false;
     }
 
     public double calculateDistanceFrom(double origin_lat, double origin_long) {
         return LatLongComparison.distanceDifference(origin_lat, origin_long, this.latitude, this.longitude);
+    }
+
+    @Override
+    public int compareTo(Restaurant arg1) {
+        return Math.round(arg1.getStars() - stars);
     }
 
 }

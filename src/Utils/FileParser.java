@@ -77,6 +77,28 @@ public class FileParser {
                 ((endTime - startTime) / 1000)));
     }
 
+    public double javaTreeSort() {
+        Map<Double, Restaurant> sortedMap = new TreeMap<>();
+        double startTime = System.currentTimeMillis();
+
+        for (Restaurant restaurant : filteredRestaurants.values()) {
+            double dist = restaurant.calculateDistanceFrom(currLat, currLong);
+            sortedMap.put(dist, restaurant);
+        }
+
+        double endTime = System.currentTimeMillis();
+        return (endTime - startTime) / 1000;
+    }
+
+    public double javaArrSort(Restaurant[] top_rated) {
+        double startTime = System.currentTimeMillis();
+
+        Arrays.sort(top_rated);
+
+        double endTime = System.currentTimeMillis();
+        return (endTime - startTime) / 1000;
+    }
+
     public Map<String, Restaurant> getAllRestaurants() {
         return allRestaurants;
     }

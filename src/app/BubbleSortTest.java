@@ -20,6 +20,7 @@ public class BubbleSortTest {
     }
 
     public void performSortUsingRating(boolean sortDistance) {
+        System.out.println();
         System.out.println("======= Commencing Bubble Sort Test ========");
         double start_time = System.currentTimeMillis();
 
@@ -29,22 +30,27 @@ public class BubbleSortTest {
 
         double sort_1_end = System.currentTimeMillis();
 
-        System.out.println(
-                "Total Time take to sort ratings = " + String.format("%.10f", (sort_1_end - start_time) / 1000));
+        System.out.println(String.format("Total Time take to sort ratings = %.10fs", (sort_1_end - start_time) / 1000));
 
         /**
-         * Only done if the user requires it
+         * Only done if the user requires it. Else, just print the top of the list. This
+         * is because bubble sort is stable, meaning the sort will honor the previous
+         * sort order, allowing for sort chaining
          */
         if (sortDistance) {
             performSortUsingRatingAndDistance(top_rated);
 
             double sort_2_end = System.currentTimeMillis();
             System.out.println(
-                    "Total Time take to sort distance = " + String.format("%.10f", (sort_2_end - sort_1_end) / 1000));
+                    String.format("Total Time take to sort distance = %.10fs", (sort_2_end - sort_1_end) / 1000));
 
-            System.out.println("Total Time for both = " + String.format("%.10f", (sort_2_end - start_time) / 1000));
+            System.out.println(String.format("Total Time for both = %.10fs", (sort_2_end - start_time) / 1000));
+        } else {
+            System.out.println(top_rated[0].toString());
         }
-        System.out.println("====== End of Bubble Sort Run ========");
+
+        System.out.println("====== End of Bubble Sort Test ========");
+        System.out.println();
     }
 
     private void performSortUsingRatingAndDistance(Restaurant[] top_rated) {

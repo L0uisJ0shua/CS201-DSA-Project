@@ -19,6 +19,8 @@ public class Main {
         BubbleSortTest test = new BubbleSortTest(fileParser, console);
         test.performSortUsingRating(false);
 
+        test.performSortUsingRating(true);
+
     }
 
 }

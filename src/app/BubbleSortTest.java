@@ -5,7 +5,7 @@ import algo.BucketSort;
 
 import java.util.Map;
 
-public class BubbleSortTest {
+public class BubbleSortTest implements AbstractTest {
 
     private FileParser data;
     private BucketSort b;
@@ -71,6 +71,7 @@ public class BubbleSortTest {
         System.out.println(top_and_close[0].toString());
     }
 
+    @Override
     public void runTests() {
         double sortTime1 = performSortUsingRating(false);
         double sortTime2 = performSortUsingRating(true);

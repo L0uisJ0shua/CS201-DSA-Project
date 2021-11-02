@@ -17,29 +17,55 @@ public class HeapSortTest implements AbstractTest {
 
     @Override
     public void runTests() {
-        performRatingSort();
-    }
-
-    private double performRatingSort() {
         System.out.println();
         System.out.println("======= Commencing Heap Sort Test ========");
-        double start_time = System.currentTimeMillis();
 
+        performDistanceSort();
+
+        System.out.println("======= End of Heap Sort Test ========");
+        System.out.println();
+
+    }
+
+    private double performDistanceSort() {
         Map<String, Restaurant> allRestaurant = parser.getFilteredRestaurants();
         double cur_lat = parser.getCurrLat();
         double cur_long = parser.getCurrLong();
+
+        double start_time = System.currentTimeMillis();
 
         top_rated = h.pqSortDistance(allRestaurant, cur_lat, cur_long);
 
         double sort_1_end = System.currentTimeMillis();
 
+        System.out
+                .println(String.format("Total Time take to sort distance = %.10fs", (sort_1_end - start_time) / 1000));
+
         if (top_rated.length > 0) {
-            System.out.println(top_rated[0]);
+            double sort_2_end = searchNearestAndBest(top_rated);
+            return sort_2_end - start_time;
+
         } else {
             System.out.println("No restaurants found");
         }
-        System.out.println(String.format("Total Time take to sort ratings = %.10fs", (sort_1_end - start_time) / 1000));
-
         return sort_1_end - start_time;
     }
+
+    /**
+     * Just go through top down and look for the first 5 star one We can only do
+     * this because heap sort is not stables
+     * 
+     * @param top_rated
+     * @return
+     */
+    private double searchNearestAndBest(Restaurant[] top_rated) {
+        for (Restaurant r : top_rated) {
+            if (r.getStars() >= 5.0) {
+                System.out.println(r);
+                break;
+            }
+        }
+        return System.currentTimeMillis();
+    }
+
 }

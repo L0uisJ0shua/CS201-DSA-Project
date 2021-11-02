@@ -73,6 +73,7 @@ public class BubbleSortTest implements AbstractTest {
 
     @Override
     public void runTests() {
+        // Runs the tests. If true, sort by distance too. Else just sort by ratings
         double sortTime1 = performSortUsingRating(false);
         double sortTime2 = performSortUsingRating(true);
 

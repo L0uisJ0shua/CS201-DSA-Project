@@ -5,13 +5,13 @@ import algo.BucketSort;
 
 import java.util.Map;
 
-public class BubbleSortTest implements AbstractTest {
+public class BucketSortTest implements AbstractTest {
 
     private FileParser data;
     private BucketSort b;
     private Restaurant[] top_rated;
 
-    public BubbleSortTest(FileParser data) {
+    public BucketSortTest(FileParser data) {
         this.data = data;
         b = new BucketSort();
     }
@@ -67,7 +67,7 @@ public class BubbleSortTest implements AbstractTest {
         double currLat = data.getCurrLat();
         double currLong = data.getCurrLong();
 
-        Restaurant[] top_and_close = b.bubbleSortDistAndGet(top_rated, currLat, currLong);
+        Restaurant[] top_and_close = b.bucketSortDistAndGet(top_rated, currLat, currLong);
         System.out.println(top_and_close[0].toString());
     }
 

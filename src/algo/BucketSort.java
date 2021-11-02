@@ -50,7 +50,7 @@ public class BucketSort {
         return Arrays.copyOfRange(array, counter, array.length - 1);
     }
 
-    public Restaurant[] bubbleSortDistAndGet(Restaurant[] array, double origin_lat, double origin_long) {
+    public Restaurant[] bucketSortDistAndGet(Restaurant[] array, double origin_lat, double origin_long) {
         int n = array.length;
 
         if (n <= 0)

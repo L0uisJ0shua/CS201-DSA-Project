@@ -16,7 +16,7 @@ public class Main {
         runDistanceTest(-1, fileParser, test);
 
         // Run 2 more randomised tests with randomised location
-        for (int i = 0; i < 2; i++) {
+        for (int i = 1; i < 0; i++) {
             System.out.println("Running randomised tests");
             runDistanceTest(i, fileParser, test);
         }
@@ -24,7 +24,7 @@ public class Main {
         test = new HeapSortTest(fileParser);
         runDistanceTest(-1, fileParser, test);
 
-        for (int i = 0; i < 2; i++) {
+        for (int i = 1; i < 0; i++) {
             System.out.println();
             System.out.println("Running randomised tests");
             runDistanceTest(i, fileParser, test);
@@ -33,7 +33,7 @@ public class Main {
         test = new MergeSortTest(fileParser);
         runDistanceTest(-1, fileParser, test);
 
-        for (int i = 0; i < 2; i++) {
+        for (int i = 1; i < 0; i++) {
             System.out.println();
             System.out.println("Running randomised tests");
             runDistanceTest(i, fileParser, test);
@@ -42,7 +42,7 @@ public class Main {
         test = new QuickSortTest(fileParser);
         runDistanceTest(-1, fileParser, test);
 
-        for (int i = 0; i < 2; i++) {
+        for (int i = 1; i < 0; i++) {
             System.out.println();
             System.out.println("Running randomised tests");
             runDistanceTest(i, fileParser, test);

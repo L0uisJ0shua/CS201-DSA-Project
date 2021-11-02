@@ -80,7 +80,7 @@ public class Restaurant implements Comparable<Restaurant> {
     }
 
     public boolean compareRating(Restaurant r2) {
-        if (this.getStars() >= r2.getStars()) {
+        if (this.getStars() > r2.getStars()) {
             return true;
         }
         return false;
@@ -95,4 +95,11 @@ public class Restaurant implements Comparable<Restaurant> {
         return Float.compare(arg1.getStars(), stars);
     }
 
+
+    public boolean compareDistance(Restaurant r2, double origin_lat, double origin_long) {
+        if (this.calculateDistanceFrom(origin_lat, origin_long) > r2.calculateDistanceFrom(origin_lat, origin_long)) {
+            return true;
+        }
+        return false;
+    }
 }

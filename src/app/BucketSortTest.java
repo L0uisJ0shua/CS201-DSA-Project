@@ -9,49 +9,48 @@ public class BucketSortTest implements AbstractTest {
 
     private FileParser data;
     private BucketSort b;
-    private Restaurant[] top_rated;
 
     public BucketSortTest(FileParser data) {
         this.data = data;
         b = new BucketSort();
     }
 
-    private double performSortUsingRating() {
+    private double performSortUsingDistance() {
         double start_time = System.currentTimeMillis();
+        Map<String, Restaurant> Restaurant_map = data.getFilteredRestaurants();
+        Restaurant[] allRestaurant = Restaurant_map.values().toArray(new Restaurant[Restaurant_map.values().size()]);
 
-        Map<String, Restaurant> allRestaurant = data.getFilteredRestaurants();
-
-        top_rated = b.bucketSortStars(allRestaurant);
+        Restaurant[] top_distance = b.bucketSortDistAndGet(allRestaurant, data.getCurrLat(), data.getCurrLong());
 
         double sort_1_end = System.currentTimeMillis();
 
-        System.out.println(String.format("Total Time take to sort ratings = %.10fs", (sort_1_end - start_time) / 1000));
+        System.out.println(String.format("Total Time take to sort distance = %.10fs", (sort_1_end - start_time) / 1000));
 
-        if (top_rated.length == 0) {
+        if (top_distance.length == 0) {
             System.out.println("No restaurant found");
         } else {
-            System.out.println(top_rated[top_rated.length - 1].toString());
+            System.out.println(top_distance[top_distance.length - 1].toString());
         }
 
         return sort_1_end - start_time;
     }
 
     private double performSortUsingRatingAndDistance() {
-        if (top_rated.length == 0) {
-            System.out.println("No restaurant found");
-            return 0;
-        }
-
-        double currLat = data.getCurrLat();
-        double currLong = data.getCurrLong();
 
         double start_time = System.currentTimeMillis();
+        Map<String, Restaurant> Restaurant_map = data.getFilteredRestaurants();
+        Restaurant[] allRestaurant = Restaurant_map.values().toArray(new Restaurant[Restaurant_map.values().size()]);
+        
+        double currLat = data.getCurrLat();
+        double currLong = data.getCurrLong();
+        
+        Restaurant[] top_rated = b.bucketSortStars(allRestaurant);
         Restaurant[] top_and_close = b.bucketSortDistAndGet(top_rated, currLat, currLong);
 
         double sort_2_end = System.currentTimeMillis();
         double result = sort_2_end - start_time;
 
-        System.out.println(String.format("Total Time take to sort distance = %.10fs", result / 1000));
+        System.out.println(String.format("Total Time take to sort ratings then distance = %.10fs", result / 1000));
         System.out.println(top_and_close[0]);
 
         return result;
@@ -62,7 +61,7 @@ public class BucketSortTest implements AbstractTest {
         System.out.println();
         System.out.println("======= Commencing Bucket Sort Test ========");
         // Runs the tests.
-        double sortTime1 = performSortUsingRating();
+        double sortTime1 = performSortUsingDistance();
         System.out.println();
         double sortTime2 = performSortUsingRatingAndDistance();
         System.out.println();

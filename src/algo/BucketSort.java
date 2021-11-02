@@ -6,13 +6,12 @@ import app.Restaurant;
 
 public class BucketSort {
 
-    public Restaurant[] bucketSortStars(Map<String, Restaurant> allRestaurants) {
-        int n = allRestaurants.size();
+    public Restaurant[] bucketSortStars(Restaurant[] array) {
+        int n = array.length;
 
         if (n <= 0)
             return new Restaurant[0];
 
-        Restaurant[] array = allRestaurants.values().toArray(new Restaurant[allRestaurants.values().size()]);
 
         // 1) Create n empty buckets
         @SuppressWarnings("unchecked")
@@ -72,7 +71,7 @@ public class BucketSort {
 
         // 3) Sort individual buckets
         for (int i = 0; i < 10000; i++) {
-            sortHelper(buckets[i]);
+            sortDistHelper(buckets[i], origin_lat, origin_long);
         }
 
         // 4) Concatenate all buckets into arr[]
@@ -87,12 +86,25 @@ public class BucketSort {
 
     }
 
-    // Insertion Sort
+    // Insertion Sort by Ratings for each Bucket
     private void sortHelper(Vector<Restaurant> vec) {
         for (int i = 1; i < vec.size(); i++) {
             int j = i - 1;
             Restaurant key = vec.get(i);
             while (j >= 0 && !vec.get(j).compareRating(key)) {
+                Restaurant temp = vec.remove(j + 1);
+                vec.add(j, temp);
+                j--;
+            }
+        }
+    }
+
+    // Insertion Sort by Distance for each Bucket
+    private void sortDistHelper(Vector<Restaurant> vec, double origin_lat, double origin_long) {
+        for (int i = 1; i < vec.size(); i++) {
+            int j = i - 1;
+            Restaurant key = vec.get(i);
+            while (j >= 0 && !vec.get(j).compareDistance(key, origin_lat, origin_long)) {
                 Restaurant temp = vec.remove(j + 1);
                 vec.add(j, temp);
                 j--;

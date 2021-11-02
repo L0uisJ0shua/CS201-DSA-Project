@@ -13,20 +13,32 @@ public class Main {
         // start by running a test with a predefined location
         AbstractTest test = new BucketSortTest(fileParser);
         boolean isRandomised = false;
-        System.out.println("Running initial test");
-        runDistanceTest(isRandomised, fileParser, test);
+        // System.out.println("Running initial test");
+        // runDistanceTest(isRandomised, fileParser, test);
 
-        // Run 2 more randomised tests with randomised location
-        isRandomised = true;
-        for (int i = 0; i < 2; i++) {
-            System.out.println("Running randomised tests");
-            runDistanceTest(isRandomised, fileParser, test);
-        }
+        // // Run 2 more randomised tests with randomised location
+        // isRandomised = true;
+        // for (int i = 0; i < 2; i++) {
+        // System.out.println("Running randomised tests");
+        // runDistanceTest(isRandomised, fileParser, test);
+        // }
 
-        test = new HeapSortTest(fileParser);
+        // test = new HeapSortTest(fileParser);
+        // isRandomised = false;
+        // runDistanceTest(isRandomised, fileParser, test);
+
+        // isRandomised = true;
+        // for (int i = 0; i < 2; i++) {
+        // System.out.println();
+        // System.out.println("Running randomised tests");
+        // runDistanceTest(isRandomised, fileParser, test);
+        // }
+
+        test = new MergeSortTest(fileParser);
         isRandomised = false;
         runDistanceTest(isRandomised, fileParser, test);
 
+        isRandomised = true;
         for (int i = 0; i < 2; i++) {
             System.out.println();
             System.out.println("Running randomised tests");

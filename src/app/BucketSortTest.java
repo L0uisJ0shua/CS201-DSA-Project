@@ -18,7 +18,7 @@ public class BucketSortTest implements AbstractTest {
 
     private double performSortUsingRating(boolean sortDistance) {
         System.out.println();
-        System.out.println("======= Commencing Bubble Sort Test ========");
+        System.out.println("======= Commencing Bucket Sort Test ========");
         double start_time = System.currentTimeMillis();
 
         Map<String, Restaurant> allRestaurant = data.getFilteredRestaurants();
@@ -31,7 +31,7 @@ public class BucketSortTest implements AbstractTest {
 
         /**
          * Only done if the user requires it. Else, just print the top of the list. This
-         * is because bubble sort is stable, meaning the sort will honor the previous
+         * is because bucket sort is stable, meaning the sort will honor the previous
          * sort order, allowing for sort chaining
          */
         double res = sort_1_end - start_time;
@@ -52,7 +52,7 @@ public class BucketSortTest implements AbstractTest {
             }
         }
 
-        System.out.println("====== End of Bubble Sort Test ========");
+        System.out.println("====== End of Bucket Sort Test ========");
         System.out.println();
 
         return res;

@@ -1,26 +1,25 @@
 package app;
 
-import java.util.Map;
-
+import java.util.*;
 import Utils.FileParser;
-import algo.HeapSort;
+import algo.MergeSort;
 
-public class HeapSortTest implements AbstractTest {
+public class MergeSortTest implements AbstractTest {
     private FileParser parser;
-    private HeapSort h;
-    private Restaurant[] top_rated;
+    private MergeSort m;
 
-    public HeapSortTest(FileParser parser) {
-        this.parser = parser;
-        h = new HeapSort();
+    public MergeSortTest(FileParser fileParser) {
+        this.parser = fileParser;
+        m = new MergeSort();
     }
 
     @Override
     public void runTests() {
         System.out.println();
-        System.out.println("======= Commencing Heap Sort Test ========");
+        System.out.println("======= Commencing Merge Sort Test ========");
 
         double sortTime1 = performDistanceSort();
+        System.out.println();
         double sortTime2 = performRatingSort();
 
         if (parser.getFilteredRestaurants().size() == 0) {
@@ -44,27 +43,28 @@ public class HeapSortTest implements AbstractTest {
         System.out.println("================================================");
         System.out.println();
 
-        System.out.println("======= End of Heap Sort Test ========");
+        System.out.println("======= End of Merge Sort Test ========");
         System.out.println();
-
     }
 
-    private double performDistanceSort() {
+    public double performDistanceSort() {
         Map<String, Restaurant> allRestaurant = parser.getFilteredRestaurants();
         double cur_lat = parser.getCurrLat();
         double cur_long = parser.getCurrLong();
+        int n = allRestaurant.size();
+        Restaurant[] array = allRestaurant.values().toArray(new Restaurant[0]);
 
         double start_time = System.currentTimeMillis();
 
-        top_rated = h.pqSortDistance(allRestaurant, cur_lat, cur_long);
+        m.mergeSortByDistance(array, 0, n - 1, cur_lat, cur_long);
 
         double sort_1_end = System.currentTimeMillis();
 
         System.out
                 .println(String.format("Total Time take to sort distance = %.10fs", (sort_1_end - start_time) / 1000));
 
-        if (top_rated.length > 0) {
-            double sort_2_end = searchNearestAndBest();
+        if (array.length > 0) {
+            double sort_2_end = searchNearestAndBest(array);
             return sort_2_end - start_time;
 
         } else {
@@ -73,37 +73,24 @@ public class HeapSortTest implements AbstractTest {
         return sort_1_end - start_time;
     }
 
-    /**
-     * Just go through top down and look for the first 5 star one We can only do
-     * this because heap sort is not stables
-     * 
-     * @param top_rated
-     * @return
-     */
-    private double searchNearestAndBest() {
-        for (Restaurant r : top_rated) {
-            if (r.getStars() >= 5.0) {
-                System.out.println(r);
-                break;
-            }
-        }
-        return System.currentTimeMillis();
-    }
-
     private double performRatingSort() {
         Map<String, Restaurant> allRestaurant = parser.getFilteredRestaurants();
+        int n = allRestaurant.size();
+        Restaurant[] array = allRestaurant.values().toArray(new Restaurant[0]);
+        double cur_lat = parser.getCurrLat();
+        double cur_long = parser.getCurrLong();
 
         double start_time = System.currentTimeMillis();
 
-        Restaurant[] result = h.pqSortRating(allRestaurant);
+        m.mergeSortByRating(array, 0, n - 1, cur_lat, cur_long);
 
         double sort_1_end = System.currentTimeMillis();
 
         System.out
                 .println(String.format("Total Time take to sort by rating = %.10fs", (sort_1_end - start_time) / 1000));
 
-        if (result.length > 0) {
-            System.out.println(result[0]);
+        if (array.length > 0) {
+            System.out.println(array[0]);
             double sort_2_end = System.currentTimeMillis();
             return sort_2_end - start_time;
 
@@ -113,4 +100,13 @@ public class HeapSortTest implements AbstractTest {
         return sort_1_end - start_time;
     }
 
+    private double searchNearestAndBest(Restaurant[] top_rated) {
+        for (Restaurant r : top_rated) {
+            if (r.getStars() >= 5.0) {
+                System.out.println(r);
+                break;
+            }
+        }
+        return System.currentTimeMillis();
+    }
 }

@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.DayOfWeek;
+import java.time.LocalDateTime;
 import java.util.*;
 
 public class FileParser {
@@ -46,13 +48,29 @@ public class FileParser {
     private void getAllData() {
         Gson gson = new Gson();
         Path path = Paths.get(System.getProperty("user.dir") + "/yelp_academic_dataset_business.json");
+        int hour = LocalDateTime.now().getHour();
+        int minute = LocalDateTime.now().getMinute();
+        // can hardcode also for testing
+        // int hour = 12;
+        // int minute = 30;
+        String dayOfWeek = LocalDateTime.now().getDayOfWeek().toString();
+        String cap = dayOfWeek.substring(0, 1) + dayOfWeek.substring(1).toLowerCase();
 
         try (BufferedReader reader = Files.newBufferedReader(path)) {
             String line;
 
             while ((line = reader.readLine()) != null) {
                 Restaurant restaurant = gson.fromJson(line, Restaurant.class);
-                allRestaurants.put(restaurant.getName(), restaurant);
+
+                // check if restaurant open
+                try {
+                    String[] operatingHrs = restaurant.getHours().get(cap).split("-");
+                    if (isOpen(operatingHrs, hour, minute)) {
+                        allRestaurants.put(restaurant.getName(), restaurant);
+                    }
+                } catch (Exception e) {
+                    continue;
+                }
             }
 
             System.out.println("Total data size involved: " + allRestaurants.size());
@@ -60,6 +78,24 @@ public class FileParser {
         } catch (IOException e) {
             e.getStackTrace();
         }
+    }
+
+    private boolean isOpen(String[] operatingHrs, int currHr, int currMin) {
+        String[] opening = operatingHrs[0].split(":");
+        int openingHr = Integer.parseInt(opening[0]);
+        int openingMin = Integer.parseInt(opening[1]);
+
+        String[] closing = operatingHrs[1].split(":");
+        int closingHr = Integer.parseInt(closing[0]);
+        int closingMin = Integer.parseInt(closing[1]);
+
+        // Some stores open 24/7.
+        if (closingHr == 0)
+            closingHr = 23;
+        if (closingMin == 0)
+            closingMin = 59;
+
+        return currHr >= openingHr && currMin >= openingMin && currHr <= closingHr && currMin <= closingMin;
     }
 
     public void retrieveData(boolean filter, int acceptableRange) {

@@ -9,14 +9,14 @@ public class DateTimeComparator {
     private Map<String, Integer> timestamp;
     private String day;
 
-    public String getDay() {
+    public String getDay(){
         LocalDateTime currentTimestamp = LocalDateTime.now();
         DayOfWeek currentDay = currentTimestamp.getDayOfWeek();
         String time = "" + currentTimestamp.getHour() + currentTimestamp.getMinute();
         int curretTime = Integer.parseInt(time);
 
         Map<String, Integer> dateTimeMap = new HashMap<String, Integer>();
-
+        
         setTimestamp(dateTimeMap);
 
         String localDayStartingChar = currentDay.toString().substring(0, 1);
@@ -29,32 +29,23 @@ public class DateTimeComparator {
         return day;
     }
 
-    public boolean isOpen(String operatingHours, int currHr, int currMin) {
-        String[] operatingHrs = operatingHours.split("-");
-        String[] opening = operatingHrs[0].split(":");
-        int openingHr = Integer.parseInt(opening[0]);
-        int openingMin = Integer.parseInt(opening[1]);
+    public boolean isOpen(String operatingHours){
+        String[] hours = operatingHours.split("-");
+        int opening = Integer.parseInt(hours[0].replace(":", ""));
+        int closing = Integer.parseInt(hours[1].replace(":", ""));
 
-        String[] closing = operatingHrs[1].split(":");
-        int closingHr = Integer.parseInt(closing[0]);
-        int closingMin = Integer.parseInt(closing[1]);
+        int currTime = timestamp.get(day);
+        if(currTime >= opening && currTime <= closing) return true;
 
-        // Some stores open 24/7.
-        if (closingHr == 0)
-            closingHr = 23;
-        if (closingMin == 0)
-            closingMin = 59;
-
-        return currHr >= openingHr && currMin >= openingMin && currHr <= closingHr && currMin <= closingMin;
-
+        return false;
     }
 
-    public void setDay(String day) {
+    public void setDay(String day){
         this.day = day;
     }
 
-    public void setTimestamp(Map<String, Integer> timestamp) {
+    public void setTimestamp(Map<String, Integer> timestamp){
         this.timestamp = timestamp;
     }
-
+    
 }

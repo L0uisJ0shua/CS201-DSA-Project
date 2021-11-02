@@ -39,4 +39,38 @@ public class Main {
         }
     }
 
+    public static void performQuickSort(String sortingOption, Map<String, Restaurant> restaurant, double currLat,
+            double currLong) {
+        if (restaurant.size() == 0) {
+            return;
+        }
+
+        System.out.println("======= Commencing Quick Sort Test ========");
+        double startTime = System.currentTimeMillis();
+
+        // First we have to parse the map into an array
+        Restaurant[] restaurants = restaurant.values().toArray(new Restaurant[restaurant.values().size()]);
+
+        System.out.println("Total size of data required to perform Quick Sort = " + restaurants.length);
+
+        if (sortingOption.equals("Y") || sortingOption.equals("y")) {
+            System.out.println("Sorting data based on rating...");
+            // Perform Merge Sort by highest rating and closest restaurant
+            QuickSort.quickSortByRating(restaurants, 0, restaurants.length - 1, currLat, currLong);
+
+        } else {
+
+            System.out.println("Sorting data based on distance...");
+            // Perform Merge Sort by distance on the given array
+            QuickSort.quickSortByDistance(restaurants, 0, restaurants.length - 1, currLat, currLong);
+        }
+
+        // Display time taken to perform merge sort on the data given
+        System.out.println("Nearest restaurant availble = " + restaurants[0]);
+        System.out.println("Total time taken to perform Quick Sort = "
+                + String.format("%.10f", (System.currentTimeMillis() - startTime) / 1000));
+        System.out.println("\n====== End of Quick Sort Test ========");
+    }
+
+
 }

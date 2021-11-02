@@ -11,42 +11,30 @@ public class Main {
         FileParser fileParser = new FileParser(allRestaurants);
 
         // start by running a test with a predefined location
-        AbstractTest test = new BubbleSortTest(fileParser);
         boolean isRandomised = false;
         System.out.println("Running initial test");
-        runDistanceTest(isRandomised, fileParser, test);
+        runDistanceTest(isRandomised, fileParser);
 
-        // Run 2 more randomised tests with randomised location
+        // Run 3 more randomised tests with randomised location
         isRandomised = true;
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < 3; i++) {
             System.out.println("Running randomised tests");
-            runDistanceTest(isRandomised, fileParser, test);
-        }
-
-        test = new HeapSortTest(fileParser);
-        isRandomised = false;
-        runDistanceTest(isRandomised, fileParser, test);
-
-        for (int i = 0; i < 2; i++) {
-            System.out.println();
-            System.out.println("Running randomised tests");
-            runDistanceTest(isRandomised, fileParser, test);
+            runDistanceTest(isRandomised, fileParser);
         }
 
     }
 
-    private static void runDistanceTest(boolean randomise, FileParser fileParser, AbstractTest test) {
+    private static void runDistanceTest(boolean randomise, FileParser fileParser) {
         if (randomise) {
             fileParser.randomise();
-        } else {
-            fileParser.resetValues();
         }
 
-        int[] distanceTests = { 100, 500, 1000, 1500 };
+        int[] distanceTests = { 10, 100, 500, 1000, 1500 };
         for (int i : distanceTests) {
             fileParser.retrieveData(true, i);
 
             // First perform a test to only sort review. Then sort review then distance
+            BubbleSortTest test = new BubbleSortTest(fileParser);
             test.runTests();
         }
     }

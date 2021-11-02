@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -16,12 +15,14 @@ public class FileParser {
 
     private Map<String, Restaurant> allRestaurants;
     private Map<String, Restaurant> filteredRestaurants;
+    private DateTimeComparator dateTimeComparator;
     private double acceptableRange = 5000;
     private double currLat = 39.778259;
     private double currLong = -105.417931;
 
     public FileParser(Map<String, Restaurant> container) {
         allRestaurants = container;
+        dateTimeComparator = new DateTimeComparator();
         getAllData();
     }
 
@@ -64,8 +65,8 @@ public class FileParser {
 
                 // check if restaurant open
                 try {
-                    String[] operatingHrs = restaurant.getHours().get(cap).split("-");
-                    if (isOpen(operatingHrs, hour, minute)) {
+                    String operatingHrs = restaurant.getHours().get(cap);
+                    if (dateTimeComparator.isOpen(operatingHrs, hour, minute)) {
                         allRestaurants.put(restaurant.getName(), restaurant);
                     }
                 } catch (Exception e) {
@@ -78,24 +79,6 @@ public class FileParser {
         } catch (IOException e) {
             e.getStackTrace();
         }
-    }
-
-    private boolean isOpen(String[] operatingHrs, int currHr, int currMin) {
-        String[] opening = operatingHrs[0].split(":");
-        int openingHr = Integer.parseInt(opening[0]);
-        int openingMin = Integer.parseInt(opening[1]);
-
-        String[] closing = operatingHrs[1].split(":");
-        int closingHr = Integer.parseInt(closing[0]);
-        int closingMin = Integer.parseInt(closing[1]);
-
-        // Some stores open 24/7.
-        if (closingHr == 0)
-            closingHr = 23;
-        if (closingMin == 0)
-            closingMin = 59;
-
-        return currHr >= openingHr && currMin >= openingMin && currHr <= closingHr && currMin <= closingMin;
     }
 
     public void retrieveData(boolean filter, int acceptableRange) {

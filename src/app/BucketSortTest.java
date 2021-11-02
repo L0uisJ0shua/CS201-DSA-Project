@@ -16,9 +16,7 @@ public class BucketSortTest implements AbstractTest {
         b = new BucketSort();
     }
 
-    private double performSortUsingRating(boolean sortDistance) {
-        System.out.println();
-        System.out.println("======= Commencing Bucket Sort Test ========");
+    private double performSortUsingRating() {
         double start_time = System.currentTimeMillis();
 
         Map<String, Restaurant> allRestaurant = data.getFilteredRestaurants();
@@ -29,53 +27,45 @@ public class BucketSortTest implements AbstractTest {
 
         System.out.println(String.format("Total Time take to sort ratings = %.10fs", (sort_1_end - start_time) / 1000));
 
-        /**
-         * Only done if the user requires it. Else, just print the top of the list. This
-         * is because bucket sort is stable, meaning the sort will honor the previous
-         * sort order, allowing for sort chaining
-         */
-        double res = sort_1_end - start_time;
-        if (sortDistance) {
-            performSortUsingRatingAndDistance();
-
-            double sort_2_end = System.currentTimeMillis();
-            res = sort_2_end - sort_1_end;
-            System.out.println(String.format("Total Time take to sort distance = %.10fs", res / 1000));
-
-            System.out.println(String.format("Total Time for both = %.10fs", (sort_2_end - start_time) / 1000));
-        } else {
-            if (top_rated.length == 0) {
-                System.out.println("No restaurant found");
-                return 0;
-            } else {
-                System.out.println(top_rated[top_rated.length - 1].toString());
-            }
-        }
-
-        System.out.println("====== End of Bucket Sort Test ========");
-        System.out.println();
-
-        return res;
-    }
-
-    private void performSortUsingRatingAndDistance() {
         if (top_rated.length == 0) {
             System.out.println("No restaurant found");
-            return;
+        } else {
+            System.out.println(top_rated[top_rated.length - 1].toString());
+        }
+
+        return sort_1_end - start_time;
+    }
+
+    private double performSortUsingRatingAndDistance() {
+        if (top_rated.length == 0) {
+            System.out.println("No restaurant found");
+            return 0;
         }
 
         double currLat = data.getCurrLat();
         double currLong = data.getCurrLong();
 
+        double start_time = System.currentTimeMillis();
         Restaurant[] top_and_close = b.bucketSortDistAndGet(top_rated, currLat, currLong);
-        System.out.println(top_and_close[0].toString());
+
+        double sort_2_end = System.currentTimeMillis();
+        double result = sort_2_end - start_time;
+
+        System.out.println(String.format("Total Time take to sort distance = %.10fs", result / 1000));
+        System.out.println(top_and_close[0]);
+
+        return result;
     }
 
     @Override
     public void runTests() {
-        // Runs the tests. If true, sort by distance too. Else just sort by ratings
-        double sortTime1 = performSortUsingRating(false);
-        double sortTime2 = performSortUsingRating(true);
+        System.out.println();
+        System.out.println("======= Commencing Bucket Sort Test ========");
+        // Runs the tests.
+        double sortTime1 = performSortUsingRating();
+        System.out.println();
+        double sortTime2 = performSortUsingRatingAndDistance();
+        System.out.println();
 
         // iterate through entire data set to find the top x
 
@@ -98,6 +88,9 @@ public class BucketSortTest implements AbstractTest {
         System.out.println(
                 String.format("Current sort takes %.10f more seconds", (sortTime2 - javaTreeBenchmark) / 1000));
         System.out.println("================================================");
+        System.out.println();
+
+        System.out.println("====== End of Bucket Sort Test ========");
         System.out.println();
 
     }

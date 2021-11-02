@@ -19,15 +19,16 @@ public class FileParser {
     private double acceptableRange = 5000;
     private double currLat = 39.778259;
     private double currLong = -105.417931;
+    private double[] randomLatLong = new double[4];
 
     public FileParser(Map<String, Restaurant> container) {
         allRestaurants = container;
         dateTimeComparator = new DateTimeComparator();
         getAllData();
+        generateRandomLatLong();
     }
 
-    // Randomise lat long
-    public void randomise() {
+    private void generateRandomLatLong() {
         int totalSize = allRestaurants.size();
         if (allRestaurants == null || totalSize == 0) {
             return;
@@ -35,10 +36,19 @@ public class FileParser {
 
         Random R = new Random();
         List<String> keysArr = new ArrayList<>(allRestaurants.keySet());
-        String randomRest = keysArr.get(R.nextInt(totalSize));
-        Restaurant random = allRestaurants.get(randomRest);
-        currLat = random.getLatitude() + Math.random() * 10;
-        currLong = random.getLongitude() - Math.random() * 10;
+
+        for (int i = 0; i < 2; i++) {
+            String randomRest = keysArr.get(R.nextInt(totalSize));
+            Restaurant random = allRestaurants.get(randomRest);
+            randomLatLong[i * 2] = random.getLatitude() + Math.random() * 10;
+            randomLatLong[(i * 2) + 1] = random.getLongitude() - Math.random() * 10;
+        }
+    }
+
+    // Randomise lat long
+    public void randomise(int i) {
+        currLat = randomLatLong[i * 2];
+        currLong = randomLatLong[(i * 2) + 1];
     }
 
     public void resetValues() {

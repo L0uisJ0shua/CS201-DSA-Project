@@ -1,6 +1,5 @@
 package algo;
 
-import java.util.*;
 import app.Restaurant;
 
 public class MergeSort {

@@ -21,4 +21,21 @@ public class HeapSort {
 
     return sortedRestaurant;
   }
+
+  public Restaurant[] pqSortRating(Map<String, Restaurant> S) {
+    int n = S.size();
+
+    PriorityQueue<Map.Entry<Float, Restaurant>> queue = new PriorityQueue<>((a, b) -> b.getKey().compareTo(a.getKey()));
+
+    for (Restaurant restaurant : S.values()) {
+      queue.add(new AbstractMap.SimpleEntry<Float, Restaurant>(restaurant.getStars(), restaurant));
+    }
+
+    Restaurant[] sortedRestaurant = new Restaurant[n];
+    for (int j = 0; j < n; j++) {
+      sortedRestaurant[j] = queue.remove().getValue();
+    }
+
+    return sortedRestaurant;
+  }
 }

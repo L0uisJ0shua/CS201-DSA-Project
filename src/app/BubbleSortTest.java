@@ -83,7 +83,8 @@ public class BubbleSortTest implements AbstractTest {
             return;
         }
 
-        double javaArrBenchmark = data.javaArrSort(top_rated);
+        Restaurant[] restArr = data.getFilteredRestaurants().values().toArray(new Restaurant[0]);
+        double javaArrBenchmark = data.javaArrSort(restArr);
         System.out.println("================Benchmark with Java=============");
         System.out.println(String.format("Benchmark rating sorting with Java TimSort: %.10fs", javaArrBenchmark));
         System.out

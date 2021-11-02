@@ -92,7 +92,7 @@ public class Restaurant implements Comparable<Restaurant> {
 
     @Override
     public int compareTo(Restaurant arg1) {
-        return Math.round(arg1.getStars() - stars);
+        return Float.compare(arg1.getStars(), stars);
     }
 
 }

@@ -20,7 +20,29 @@ public class HeapSortTest implements AbstractTest {
         System.out.println();
         System.out.println("======= Commencing Heap Sort Test ========");
 
-        performDistanceSort();
+        double sortTime1 = performDistanceSort();
+        double sortTime2 = performRatingSort();
+
+        if (parser.getFilteredRestaurants().size() == 0) {
+            return;
+        }
+
+        Restaurant[] restArr = parser.getFilteredRestaurants().values().toArray(new Restaurant[0]);
+        double javaArrBenchmark = parser.javaArrSort(restArr);
+        System.out.println("================Benchmark with Java=============");
+        System.out.println(String.format("Benchmark rating sorting with Java TimSort: %.10fs", javaArrBenchmark));
+        System.out
+                .println(String.format("Current sort takes %.10f more seconds", (sortTime1 - javaArrBenchmark) / 1000));
+        System.out.println("================================================");
+        System.out.println();
+
+        double javaTreeBenchmark = parser.javaTreeSort();
+        System.out.println("================Benchmark with Java=============");
+        System.out.println(String.format("Benchmark distance sorting with Java RBTree: %.10fs", javaTreeBenchmark));
+        System.out.println(
+                String.format("Current sort takes %.10f more seconds", (sortTime2 - javaTreeBenchmark) / 1000));
+        System.out.println("================================================");
+        System.out.println();
 
         System.out.println("======= End of Heap Sort Test ========");
         System.out.println();
@@ -66,6 +88,29 @@ public class HeapSortTest implements AbstractTest {
             }
         }
         return System.currentTimeMillis();
+    }
+
+    private double performRatingSort() {
+        Map<String, Restaurant> allRestaurant = parser.getFilteredRestaurants();
+
+        double start_time = System.currentTimeMillis();
+
+        Restaurant[] result = h.pqSortRating(allRestaurant);
+
+        double sort_1_end = System.currentTimeMillis();
+
+        System.out
+                .println(String.format("Total Time take to sort by rating = %.10fs", (sort_1_end - start_time) / 1000));
+
+        if (result.length > 0) {
+            System.out.println(result[0]);
+            double sort_2_end = System.currentTimeMillis();
+            return sort_2_end - start_time;
+
+        } else {
+            System.out.println("No restaurants found");
+        }
+        return sort_1_end - start_time;
     }
 
 }

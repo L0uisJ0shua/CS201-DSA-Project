@@ -5,7 +5,7 @@ import java.util.Map;
 import Utils.FileParser;
 import algo.HeapSort;
 
-public class HeapSortTest implements AbstractTest {
+public class HeapSortTest extends AbstractTest {
     private FileParser parser;
     private HeapSort h;
     private Restaurant[] top_rated;

@@ -1,5 +1,5 @@
 package app;
 
-public interface AbstractTest {
-    void runTests();
+public abstract class AbstractTest {
+    public abstract void runTests();
 }

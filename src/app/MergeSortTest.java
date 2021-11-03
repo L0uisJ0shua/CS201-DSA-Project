@@ -4,7 +4,7 @@ import java.util.*;
 import Utils.FileParser;
 import algo.MergeSort;
 
-public class MergeSortTest implements AbstractTest {
+public class MergeSortTest extends AbstractTest {
     private FileParser parser;
     private MergeSort m;
 

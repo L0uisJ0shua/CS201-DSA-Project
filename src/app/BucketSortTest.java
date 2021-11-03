@@ -5,7 +5,7 @@ import algo.BucketSort;
 
 import java.util.Map;
 
-public class BucketSortTest implements AbstractTest {
+public class BucketSortTest extends AbstractTest {
 
     private FileParser data;
     private BucketSort b;
@@ -24,7 +24,8 @@ public class BucketSortTest implements AbstractTest {
 
         double sort_1_end = System.currentTimeMillis();
 
-        System.out.println(String.format("Total Time take to sort distance = %.10fs", (sort_1_end - start_time) / 1000));
+        System.out
+                .println(String.format("Total Time take to sort distance = %.10fs", (sort_1_end - start_time) / 1000));
 
         if (top_distance.length == 0) {
             System.out.println("No restaurant found");
@@ -40,10 +41,10 @@ public class BucketSortTest implements AbstractTest {
         double start_time = System.currentTimeMillis();
         Map<String, Restaurant> Restaurant_map = data.getFilteredRestaurants();
         Restaurant[] allRestaurant = Restaurant_map.values().toArray(new Restaurant[Restaurant_map.values().size()]);
-        
+
         double currLat = data.getCurrLat();
         double currLong = data.getCurrLong();
-        
+
         Restaurant[] top_rated = b.bucketSortStars(allRestaurant);
         Restaurant[] top_and_close = b.bucketSortDistAndGet(top_rated, currLat, currLong);
 

@@ -4,7 +4,7 @@ import Utils.FileParser;
 import algo.QuickSort;
 import java.util.*;
 
-public class QuickSortTest implements AbstractTest {
+public class QuickSortTest extends AbstractTest {
     private FileParser parser;
 
     public QuickSortTest(FileParser fileParser) {

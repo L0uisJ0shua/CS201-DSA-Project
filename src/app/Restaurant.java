@@ -95,9 +95,9 @@ public class Restaurant implements Comparable<Restaurant> {
         return Float.compare(arg1.getStars(), stars);
     }
 
-
     public boolean compareDistance(Restaurant r2, double origin_lat, double origin_long) {
-        if (this.calculateDistanceFrom(origin_lat, origin_long) > r2.calculateDistanceFrom(origin_lat, origin_long)) {
+        if (Double.compare(calculateDistanceFrom(origin_lat, origin_long),
+                r2.calculateDistanceFrom(origin_lat, origin_long)) > 0) {
             return true;
         }
         return false;

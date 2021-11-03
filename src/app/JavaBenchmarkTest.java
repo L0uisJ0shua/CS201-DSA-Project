@@ -17,18 +17,15 @@ public class JavaBenchmarkTest extends AbstractTest {
     /**
      * A test to run the benchmark with Java's own implementations
      * 
-     * @param testNum
      */
     public void runBenchmark() {
         double startTime = System.currentTimeMillis();
-        int currTest = parser.getCurrTestNum();
-        int currRound = parser.getCurrRound();
 
         javaTreeSortDistance();
 
         double endTime = System.currentTimeMillis();
 
-        results.setResultsDistanceThenRating(endTime - startTime, currTest, currRound);
+        saveTestResultsDistance(endTime - startTime);
     }
 
     /**

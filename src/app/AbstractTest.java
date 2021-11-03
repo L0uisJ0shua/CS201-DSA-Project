@@ -39,7 +39,10 @@ public abstract class AbstractTest {
         // print the first restaurant at the nearest and highest rating
         for (Restaurant r : top_rated) {
             if (r.getStars() == highestRating) {
-                System.out.println(r);
+                results.addBestRestaurant(r);
+                // System.out.println(r.calculateDistanceFrom(parser.getCurrLat(),
+                // parser.getCurrLong()));
+                // System.out.println(r);
                 break;
             }
         }
@@ -52,6 +55,18 @@ public abstract class AbstractTest {
 
     public String getType() {
         return type;
+    }
+
+    protected void saveTestResultsDistance(double time) {
+        int currTest = parser.getCurrTestNum();
+        int currRound = parser.getCurrRound();
+        results.setResultsDistanceThenRating(time, currTest, currRound);
+    }
+
+    protected void saveTestResultsRating(double time) {
+        int currTest = parser.getCurrTestNum();
+        int currRound = parser.getCurrRound();
+        results.setResultsRatingThenDistance(time, currTest, currRound);
     }
 
     /**

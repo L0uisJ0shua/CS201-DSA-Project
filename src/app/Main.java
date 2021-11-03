@@ -28,7 +28,7 @@ public class Main {
         List<AbstractTest> testList = new ArrayList<>();
         testList.add(new JavaBenchmarkTest(fileParser));
         // testList.add(new BucketSortTest(fileParser));
-        // testList.add(new HeapSortTest(fileParser));
+        testList.add(new HeapSortTest(fileParser));
         // testList.add(new MergeSortTest(fileParser));
         // testList.add(new QuickSortTest(fileParser));
 
@@ -38,6 +38,7 @@ public class Main {
         }
 
         System.out.println(resultsMap.get("Benchmark").verifyResults());
+        System.out.println(resultsMap.get("HeapSort").verifyResults());
 
     }
 
@@ -54,6 +55,7 @@ public class Main {
      * @param test
      */
     private static Results runDistanceTest(FileParser fileParser, AbstractTest test) {
+        System.out.println(String.format("Commencing %s Sort Tests...", test.getType()));
 
         for (int i = 0; i < NUMBER_OF_TESTS; i++) {
             for (int j = 0; j < distanceTests.length; j++) {
@@ -63,6 +65,8 @@ public class Main {
                 test.runTests();
             }
         }
+
+        System.out.println(String.format("End of %s Sort Test%n", test.getType()));
 
         return test.getResults();
     }

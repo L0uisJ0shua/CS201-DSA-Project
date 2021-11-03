@@ -60,6 +60,10 @@ public class Results {
         bestRestaurantsList.add(r);
     }
 
+    public String getBestRestaurants() {
+        return bestRestaurantsList.toString();
+    }
+
     /**
      * A simple function to make sure all the sorts returned the same result
      * regardless of the order of sort or type of sort or datatype
@@ -71,11 +75,17 @@ public class Results {
             return true;
         }
 
-        String initial = bestRestaurantsList.get(0).getName();
-        for (Restaurant r : bestRestaurantsList) {
-            if (!r.getName().equals(initial)) {
-                return false;
+        try {
+            String initial = bestRestaurantsList.get(0).getName();
+            for (Restaurant r : bestRestaurantsList) {
+                if (!r.getName().equals(initial)) {
+                    return false;
+                }
             }
+        } catch (Exception e) {
+            // Most likely NPE
+            System.out.println(e);
+            return false;
         }
 
         return true;

@@ -6,6 +6,7 @@ import Utils.*;
 
 public class Main {
     final static int NUMBER_OF_TESTS = 1;
+    final static int[] distanceTests = { 100, 500, 1000, 1500 };
 
     public static void main(String[] args) {
         /**
@@ -19,17 +20,24 @@ public class Main {
          * will return reproducable results for this data point. The next 2 point will
          * be randomised per run to produce results which simulate user input and usage
          */
-        FileParser fileParser = new FileParser(NUMBER_OF_TESTS);
+        FileParser fileParser = new FileParser(NUMBER_OF_TESTS, distanceTests);
+        Map<String, Results> resultsMap = new HashMap<>();
+
+        fileParser.retrieveData();
 
         List<AbstractTest> testList = new ArrayList<>();
-        testList.add(new BucketSortTest(fileParser));
-        testList.add(new HeapSortTest(fileParser));
-        testList.add(new MergeSortTest(fileParser));
-        testList.add(new QuickSortTest(fileParser));
+        testList.add(new JavaBenchmarkTest(fileParser));
+        // testList.add(new BucketSortTest(fileParser));
+        // testList.add(new HeapSortTest(fileParser));
+        // testList.add(new MergeSortTest(fileParser));
+        // testList.add(new QuickSortTest(fileParser));
 
         for (AbstractTest test : testList) {
-            runDistanceTest(fileParser, test);
+            Results r = runDistanceTest(fileParser, test);
+            resultsMap.put(test.getType(), r);
         }
+
+        System.out.println(resultsMap.get("Benchmark").verifyResults());
 
     }
 
@@ -45,19 +53,18 @@ public class Main {
      * @param fileParser
      * @param test
      */
-    private static void runDistanceTest(FileParser fileParser, AbstractTest test) {
-        int[] distanceTests = { 100, 500, 1000, 1500 };
+    private static Results runDistanceTest(FileParser fileParser, AbstractTest test) {
 
         for (int i = 0; i < NUMBER_OF_TESTS; i++) {
-            for (int j : distanceTests) {
-                fileParser.setTestNum(i);
-                fileParser.setAcceptableRange(j);
+            for (int j = 0; j < distanceTests.length; j++) {
+                fileParser.setCurrTestNum(i);
+                fileParser.setRound(j);
 
-                fileParser.retrieveData();
                 test.runTests();
             }
         }
 
+        return test.getResults();
     }
 
 }

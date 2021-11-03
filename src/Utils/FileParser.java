@@ -37,11 +37,13 @@ class LatLongPair {
 public class FileParser {
 
     private Map<String, Restaurant> allRestaurants = new HashMap<>();
-    private Map<String, Restaurant> filteredRestaurants;
     private DateTimeComparator dateTimeComparator = new DateTimeComparator();
     private List<LatLongPair> latLongPairs = new ArrayList<>();
-    private double acceptableRange;
-    private int testNum;
+    private Restaurant[][][] filteredRestaurants;
+    private int[] acceptableRanges;
+    private int currRound;
+    private int testCount;
+    private int currTestNum;
 
     /**
      * Generate an arrayList of lat-long with the default values and n number of
@@ -49,7 +51,11 @@ public class FileParser {
      * 
      * @param numTests
      */
-    public FileParser(final int numTests) {
+    public FileParser(final int numTests, final int[] distanceTests) {
+        acceptableRanges = distanceTests;
+        testCount = numTests;
+        filteredRestaurants = new Restaurant[numTests][distanceTests.length][];
+
         getAllData();
         generateRandomLatLong(numTests);
     }
@@ -120,64 +126,49 @@ public class FileParser {
     /**
      * Function to obtain a filtered dataset based on the acceptableDistance
      * 
-     * @param testNum         the index of test which is being ran
-     * @param acceptableRange
      */
     public void retrieveData() {
-        double currLat = latLongPairs.get(testNum).getCurrLat();
-        double currLong = latLongPairs.get(testNum).getCurrLong();
+        for (int i = 0; i < testCount; i++) {
+            // Set it to the respective tests. Tests differ by long-lat. Rounds differ by
+            // distance
+            currTestNum = i;
 
-        System.out.println("Retrieving data for all entries with distance less than " + acceptableRange + "km:");
-        filteredRestaurants = new HashMap<>();
+            for (int j = 0; j < acceptableRanges.length; j++) {
+                Restaurant[] filteredRestaurant = filterRestaurantByDistance(acceptableRanges[j]);
+                filteredRestaurants[i][j] = filteredRestaurant;
+            }
+        }
+    }
+
+    /**
+     * Filter restaurant by distance and save the result into the main array
+     * 
+     * @param distance
+     */
+    private Restaurant[] filterRestaurantByDistance(int distance) {
+        double currLat = getCurrLat();
+        double currLong = getCurrLong();
+        List<Restaurant> restaurantList = new ArrayList<>();
+
+        System.out.println("Retrieving data for all entries with distance less than " + distance + "km:");
 
         double startTime = System.currentTimeMillis();
+
         for (Restaurant restaurant : allRestaurants.values()) {
             if (LatLongComparison.distanceDifference(currLat, currLong, restaurant.getLatitude(),
-                    restaurant.getLongitude()) <= acceptableRange) {
-                filteredRestaurants.put(restaurant.getName(), restaurant);
+                    restaurant.getLongitude()) <= distance) {
+                restaurantList.add(restaurant);
             }
         }
 
+        Restaurant[] filteredRestaurants = restaurantList.toArray(new Restaurant[0]);
+
         double endTime = System.currentTimeMillis();
-        System.out.println(String.format("Time to filter dataset of size %d: %.10fs", filteredRestaurants.size(),
+        System.out.println(String.format("Time to filter dataset of size %d: %.10fs", filteredRestaurants.length,
                 ((endTime - startTime) / 1000)));
-    }
+        System.out.println();
 
-    /**
-     * Function to insert into a tree and perform inorder traversal to obtain the
-     * results in an array
-     * 
-     * @return
-     */
-    public double javaTreeSort() {
-        double currLat = getCurrLat();
-        double currLong = getCurrLong();
-
-        Map<Double, Restaurant> sortedMap = new TreeMap<>();
-        double startTime = System.currentTimeMillis();
-
-        for (Restaurant restaurant : filteredRestaurants.values()) {
-            double dist = restaurant.calculateDistanceFrom(currLat, currLong);
-            sortedMap.put(dist, restaurant);
-        }
-
-        double endTime = System.currentTimeMillis();
-        return (endTime - startTime) / 1000;
-    }
-
-    /**
-     * Sort by rating based on reviews alone
-     * 
-     * @param restaurant
-     * @return
-     */
-    public double javaArrSort(Restaurant[] restaurant) {
-        double startTime = System.currentTimeMillis();
-
-        Arrays.sort(restaurant);
-
-        double endTime = System.currentTimeMillis();
-        return (endTime - startTime) / 1000;
+        return filteredRestaurants;
     }
 
     /**
@@ -193,35 +184,43 @@ public class FileParser {
         return latLongPairs;
     }
 
-    public void setAllRestaurants(Map<String, Restaurant> allRestaurants) {
-        this.allRestaurants = allRestaurants;
+    public Restaurant[] getFilteredRestaurants() {
+        return filteredRestaurants[currTestNum][currRound];
     }
 
-    public Map<String, Restaurant> getFilteredRestaurants() {
-        return filteredRestaurants;
+    public int getAcceptableRange() {
+        return acceptableRanges[currRound];
     }
 
-    public double getAcceptableRange() {
-        return acceptableRange;
+    public int[] getAcceptableRanges() {
+        return acceptableRanges;
     }
 
-    public void setAcceptableRange(double acceptableRange) {
-        this.acceptableRange = acceptableRange;
+    public int getCurrTestNum() {
+        return currTestNum;
     }
 
-    public int getTestNum() {
-        return testNum;
-    }
-
-    public void setTestNum(int testNum) {
-        this.testNum = testNum;
+    public void setCurrTestNum(int testNum) {
+        currTestNum = testNum;
     }
 
     public double getCurrLat() {
-        return latLongPairs.get(testNum).getCurrLat();
+        return latLongPairs.get(currTestNum).getCurrLat();
     }
 
     public double getCurrLong() {
-        return latLongPairs.get(testNum).getCurrLong();
+        return latLongPairs.get(currTestNum).getCurrLong();
+    }
+
+    public int getTestCount() {
+        return testCount;
+    }
+
+    public void setRound(int round) {
+        currRound = round;
+    }
+
+    public int getCurrRound() {
+        return currRound;
     }
 }

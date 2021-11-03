@@ -11,24 +11,7 @@ public class HeapSortTest extends AbstractTest {
         h = new HeapSort();
     }
 
-    @Override
-    public void runTests() {
-        double timeTaken1 = performDistanceSortThenRating();
-        double timeTaken2 = performRatingSortThenDistance();
-
-        if (parser.getFilteredRestaurants().length == 0) {
-            saveTestResultsDistance(0);
-            saveTestResultsRating(0);
-            return;
-        }
-
-        saveTestResultsDistance(timeTaken1);
-        saveTestResultsRating(timeTaken2);
-    }
-
-    private double performDistanceSortThenRating() {
-        double currLat = parser.getCurrLat();
-        double currLong = parser.getCurrLong();
+    protected double performDistanceSortThenRating(double currLat, double currLong) {
         Restaurant[] filteredRestaurants = parser.getFilteredRestaurants();
 
         double start_time = System.currentTimeMillis();
@@ -46,9 +29,8 @@ public class HeapSortTest extends AbstractTest {
         return sort_2_end - start_time;
     }
 
-    private double performRatingSortThenDistance() {
-        double currLat = parser.getCurrLat();
-        double currLong = parser.getCurrLong();
+    @Override
+    protected double performRatingSortThenDistance(double currLat, double currLong) {
         Restaurant[] filteredRestaurants = parser.getFilteredRestaurants();
 
         double start_time = System.currentTimeMillis();

@@ -14,7 +14,26 @@ public abstract class AbstractTest {
         results = new Results(parser.getTestCount(), parser.getAcceptableRanges().length);
     }
 
-    public abstract void runTests();
+    public void runTests() {
+        double currLat = parser.getCurrLat();
+        double currLong = parser.getCurrLong();
+
+        double sortTime1 = performDistanceSortThenRating(currLat, currLong);
+        double sortTime2 = performRatingSortThenDistance(currLat, currLong);
+
+        if (parser.getFilteredRestaurants().length == 0) {
+            saveTestResultsDistance(0);
+            saveTestResultsRating(0);
+            return;
+        }
+
+        saveTestResultsDistance(sortTime1);
+        saveTestResultsRating(sortTime2);
+    }
+
+    protected abstract double performDistanceSortThenRating(double currLat, double currLong);
+
+    protected abstract double performRatingSortThenDistance(double currLat, double currLong);
 
     /**
      * Just go through top down and look for the first 5 star one We can only do
@@ -40,9 +59,6 @@ public abstract class AbstractTest {
         for (Restaurant r : top_rated) {
             if (r.getStars() == highestRating) {
                 results.addBestRestaurant(r);
-                // System.out.println(r.calculateDistanceFrom(parser.getCurrLat(),
-                // parser.getCurrLong()));
-                // System.out.println(r);
                 break;
             }
         }

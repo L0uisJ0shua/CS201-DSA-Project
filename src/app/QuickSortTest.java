@@ -4,33 +4,13 @@ import Utils.*;
 import algo.QuickSort;
 
 public class QuickSortTest extends AbstractTest {
-    private QuickSort q;
 
     public QuickSortTest(FileParser parser) {
         super(parser, "QuickSort");
-        q = new QuickSort();
     }
 
     @Override
-    public void runTests() {
-        double currLat = parser.getCurrLat();
-        double currLong = parser.getCurrLong();
-
-        double sortTime1 = performDistanceSortThenRating(currLat, currLong);
-        double sortTime2 = performRatingSortThenDistance(currLat, currLong);
-
-        if (parser.getFilteredRestaurants().length == 0) {
-            saveTestResultsDistance(0);
-            saveTestResultsRating(0);
-            return;
-        }
-
-        saveTestResultsDistance(sortTime1);
-        saveTestResultsRating(sortTime2);
-
-    }
-
-    private double performDistanceSortThenRating(double currLat, double currLong) {
+    protected double performDistanceSortThenRating(double currLat, double currLong) {
         Restaurant[] filteredRestaurants = parser.getFilteredRestaurants();
         int n = filteredRestaurants.length;
 
@@ -50,7 +30,8 @@ public class QuickSortTest extends AbstractTest {
         return sort_2_end - start_time;
     }
 
-    private double performRatingSortThenDistance(double currLat, double currLong) {
+    @Override
+    protected double performRatingSortThenDistance(double currLat, double currLong) {
         Restaurant[] filteredRestaurants = parser.getFilteredRestaurants();
         int n = filteredRestaurants.length;
 

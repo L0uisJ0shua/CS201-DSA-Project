@@ -64,6 +64,13 @@ public class Results {
         return bestRestaurantsList.toString();
     }
 
+    public String getBestRestaurant() {
+        if (bestRestaurantsList.size() == 0) {
+            return null;
+        }
+        return bestRestaurantsList.get(0).getName();
+    }
+
     /**
      * A simple function to make sure all the sorts returned the same result
      * regardless of the order of sort or type of sort or datatype

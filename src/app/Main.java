@@ -27,20 +27,35 @@ public class Main {
 
         List<AbstractTest> testList = new ArrayList<>();
         testList.add(new JavaBenchmarkTest(fileParser));
-        // testList.add(new BucketSortTest(fileParser));
         testList.add(new HeapSortTest(fileParser));
         testList.add(new MergeSortTest(fileParser));
         testList.add(new QuickSortTest(fileParser));
+        testList.add(new BucketSortTest(fileParser));
 
         for (AbstractTest test : testList) {
             Results r = runDistanceTest(fileParser, test);
             resultsMap.put(test.getType(), r);
         }
 
-        System.out.println(resultsMap.get("Benchmark").verifyResults());
-        System.out.println(resultsMap.get("HeapSort").verifyResults());
-        System.out.println(resultsMap.get("MergeSort").verifyResults());
-        System.out.println(resultsMap.get("QuickSort").verifyResults());
+        System.out.printf("Benchmark consistent: %s%n", resultsMap.get("Benchmark").verifyResults());
+        System.out.printf("Heap Sort consistent: %s%n", resultsMap.get("HeapSort").verifyResults());
+        System.out.printf("Merge Sort consistent: %s%n", resultsMap.get("MergeSort").verifyResults());
+        System.out.printf("Quick Sort consistent: %s%n", resultsMap.get("QuickSort").verifyResults());
+        System.out.printf("Bucket Sort consistent: %s%n", resultsMap.get("BucketSort").verifyResults());
+
+        String bestRestaurant = resultsMap.get("Benchmark").getBestRestaurant();
+        boolean allAgree = true;
+        for (Results res : resultsMap.values()) {
+            if (!res.getBestRestaurant().equals(bestRestaurant)) {
+                allAgree = false;
+                break;
+            }
+        }
+        if (!allAgree) {
+            System.out.println("Not the same!");
+        } else {
+            System.out.println("Every sort agrees that this is the best and closest: " + bestRestaurant);
+        }
 
     }
 

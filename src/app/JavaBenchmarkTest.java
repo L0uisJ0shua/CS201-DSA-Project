@@ -61,4 +61,14 @@ public class JavaBenchmarkTest extends AbstractTest {
     private void javaArrSort(Restaurant[] arrForSorting) {
         Arrays.sort(arrForSorting);
     }
+
+    @Override
+    protected double performRatingSortThenDistance(double currLat, double currLong) {
+        return 0;
+    }
+
+    @Override
+    protected double performDistanceSortThenRating(double currLat, double currLong) {
+        return 0;
+    }
 }

@@ -30,7 +30,7 @@ public class Main {
         // testList.add(new BucketSortTest(fileParser));
         testList.add(new HeapSortTest(fileParser));
         testList.add(new MergeSortTest(fileParser));
-        // testList.add(new QuickSortTest(fileParser));
+        testList.add(new QuickSortTest(fileParser));
 
         for (AbstractTest test : testList) {
             Results r = runDistanceTest(fileParser, test);
@@ -40,6 +40,7 @@ public class Main {
         System.out.println(resultsMap.get("Benchmark").verifyResults());
         System.out.println(resultsMap.get("HeapSort").verifyResults());
         System.out.println(resultsMap.get("MergeSort").verifyResults());
+        System.out.println(resultsMap.get("QuickSort").verifyResults());
 
     }
 

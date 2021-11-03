@@ -21,8 +21,8 @@ public class FileParser {
     private double currLong = -105.417931;
     private double[] randomLatLong = new double[4];
 
-    public FileParser(Map<String, Restaurant> container) {
-        allRestaurants = container;
+    public FileParser() {
+        allRestaurants = new HashMap<>();
         dateTimeComparator = new DateTimeComparator();
         getAllData();
         generateRandomLatLong();

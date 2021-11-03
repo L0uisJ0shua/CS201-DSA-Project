@@ -7,8 +7,7 @@ import Utils.*;
 public class Main {
     public static void main(String[] args) {
 
-        Map<String, Restaurant> allRestaurants = new HashMap<>();
-        FileParser fileParser = new FileParser(allRestaurants);
+        FileParser fileParser = new FileParser();
 
         // start by running a test with a predefined location
         AbstractTest test = new BucketSortTest(fileParser);

@@ -89,13 +89,17 @@ public class Results {
                     return false;
                 }
             }
-        } catch (Exception e) {
+        } catch (NullPointerException e) {
             // Most likely NPE
             System.out.println(e);
             return false;
         }
 
         return true;
+    }
+
+    public void clearBestList() {
+        bestRestaurantsList.clear();
     }
 
 }

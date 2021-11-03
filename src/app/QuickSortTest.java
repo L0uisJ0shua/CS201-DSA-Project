@@ -21,7 +21,6 @@ public class QuickSortTest extends AbstractTest {
         double sort_1_end = System.currentTimeMillis();
 
         if (filteredRestaurants.length == 0) {
-            results.addBestRestaurant(null);
             return sort_1_end - start_time;
         }
 
@@ -42,7 +41,6 @@ public class QuickSortTest extends AbstractTest {
         double sort_1_end = System.currentTimeMillis();
 
         if (filteredRestaurants.length == 0) {
-            results.addBestRestaurant(null);
             return sort_1_end - start_time;
         }
         double sort_2_end = System.currentTimeMillis();

@@ -5,7 +5,7 @@ import java.util.*;
 import Utils.*;
 
 public class Main {
-    final static int NUMBER_OF_TESTS = 1;
+    final static int NUMBER_OF_TESTS = 3;
     final static int[] distanceTests = { 500, 1000, 1500, 2000 };
 
     public static void main(String[] args) {
@@ -33,7 +33,8 @@ public class Main {
         testList.add(new BucketSortTest(fileParser));
 
         for (int i = 0; i < NUMBER_OF_TESTS; i++) {
-            System.out.printf("Commencing Test #%d ... %n%n", i);
+            fileParser.setCurrTestNum(i);
+            System.out.printf("Commencing Test #%d ... %n%n", i + 1);
 
             for (AbstractTest test : testList) {
                 Results r = runDistanceTest(fileParser, test, i);
@@ -60,7 +61,12 @@ public class Main {
                 System.out.println("Every sort agrees that this is the best and closest: " + bestRestaurant);
             }
 
-            System.out.printf("End of Test #%d %n%n", i);
+            // Clean up the list for next test
+            for (Results r : resultsMap.values()) {
+                r.clearBestList();
+            }
+
+            System.out.printf("End of Test #%d %n%n", i + 1);
         }
 
     }
@@ -82,7 +88,6 @@ public class Main {
         System.out.printf("Commencing %s Sort Tests...", test.getType());
 
         for (int j = 0; j < distanceTests.length; j++) {
-            fileParser.setCurrTestNum(i);
             fileParser.setRound(j);
 
             test.runTests();

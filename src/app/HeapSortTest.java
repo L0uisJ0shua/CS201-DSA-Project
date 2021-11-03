@@ -21,7 +21,6 @@ public class HeapSortTest extends AbstractTest {
         double sort_1_end = System.currentTimeMillis();
 
         if (top_rated.length == 0) {
-            results.addBestRestaurant(null);
             return sort_1_end - start_time;
         }
 
@@ -39,11 +38,10 @@ public class HeapSortTest extends AbstractTest {
 
         double sort_1_end = System.currentTimeMillis();
 
-        if (sortedArr == null || sortedArr.length == 0) {
-            results.addBestRestaurant(null);
+        if (sortedArr.length != 0) {
+            results.addBestRestaurant(sortedArr[0]);
         }
 
-        results.addBestRestaurant(sortedArr[0]);
         return sort_1_end - start_time;
     }
 

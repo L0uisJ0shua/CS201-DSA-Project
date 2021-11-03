@@ -44,6 +44,10 @@ public class HeapSort {
   public Restaurant[] pqSortRatingThenDistance(Restaurant[] restaurants, double origin_lat, double origin_long) {
     int n = restaurants.length;
 
+    if (n == 0) {
+      return new Restaurant[0];
+    }
+
     PriorityQueue<Map.Entry<Float, Restaurant>> queue = new PriorityQueue<>((a, b) -> b.getKey().compareTo(a.getKey()));
 
     for (Restaurant restaurant : restaurants) {

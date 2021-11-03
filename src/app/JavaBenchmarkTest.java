@@ -50,6 +50,11 @@ public class JavaBenchmarkTest extends AbstractTest {
 
         // Now, use timSort
         javaArrSort(sortedByDistance);
+
+        if (sortedByDistance.length == 0) {
+            return;
+        }
+
         results.addBestRestaurant(sortedByDistance[0]);
     }
 

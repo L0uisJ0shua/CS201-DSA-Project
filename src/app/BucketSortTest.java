@@ -22,7 +22,6 @@ public class BucketSortTest extends AbstractTest {
         double sort_1_end = System.currentTimeMillis();
 
         if (top_rated.length == 0) {
-            results.addBestRestaurant(null);
             return sort_1_end - start_time;
         }
 
@@ -42,11 +41,10 @@ public class BucketSortTest extends AbstractTest {
 
         double sort_1_end = System.currentTimeMillis();
 
-        if (top_and_close == null || top_and_close.length == 0) {
-            results.addBestRestaurant(null);
+        if (top_and_close != null && top_and_close.length != 0) {
+            results.addBestRestaurant(top_and_close[0]);
         }
 
-        results.addBestRestaurant(top_and_close[0]);
         return sort_1_end - start_time;
 
     }

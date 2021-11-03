@@ -150,7 +150,8 @@ public class FileParser {
         double currLong = getCurrLong();
         List<Restaurant> restaurantList = new ArrayList<>();
 
-        System.out.println("Retrieving data for all entries with distance less than " + distance + "km:");
+        System.out.printf("Retrieving data for all entries with distance less than %d km for lat=%f, long=%f %n",
+                distance, currLat, currLong);
 
         double startTime = System.currentTimeMillis();
 
@@ -164,8 +165,8 @@ public class FileParser {
         Restaurant[] filteredRestaurants = restaurantList.toArray(new Restaurant[0]);
 
         double endTime = System.currentTimeMillis();
-        System.out.println(String.format("Time to filter dataset of size %d: %.10fs", filteredRestaurants.length,
-                ((endTime - startTime) / 1000)));
+        System.out.printf("Time to filter dataset of size %d: %.10fs %n", filteredRestaurants.length,
+                ((endTime - startTime) / 1000));
         System.out.println();
 
         return filteredRestaurants;

@@ -5,64 +5,59 @@ import java.util.*;
 import Utils.*;
 
 public class Main {
+    final static int NUMBER_OF_TESTS = 1;
+
     public static void main(String[] args) {
+        /**
+         * This main function will be in charge of running all the tests. The function
+         * first creates a fileParser to obtain all the data into a hashMap. It also
+         * handles the passing of the filtered dataset based on the distance. Lastly, it
+         * handles the holding of the long-lat pairs.
+         * 
+         * Out of the multiple tests, the first test will be a predefined
+         * longitude-latitude pair which we use as a control so that the experiments
+         * will return reproducable results for this data point. The next 2 point will
+         * be randomised per run to produce results which simulate user input and usage
+         */
+        FileParser fileParser = new FileParser(NUMBER_OF_TESTS);
 
-        FileParser fileParser = new FileParser();
+        List<AbstractTest> testList = new ArrayList<>();
+        testList.add(new BucketSortTest(fileParser));
+        testList.add(new HeapSortTest(fileParser));
+        testList.add(new MergeSortTest(fileParser));
+        testList.add(new QuickSortTest(fileParser));
 
-        // start by running a test with a predefined location
-        AbstractTest test = new BucketSortTest(fileParser);
-        System.out.println("Running initial test");
-        runDistanceTest(-1, fileParser, test);
-
-        // Run 2 more randomised tests with randomised location
-        for (int i = 1; i < 0; i++) {
-            System.out.println("Running randomised tests");
-            runDistanceTest(i, fileParser, test);
-        }
-
-        test = new HeapSortTest(fileParser);
-        runDistanceTest(-1, fileParser, test);
-
-        for (int i = 1; i < 0; i++) {
-            System.out.println();
-            System.out.println("Running randomised tests");
-            runDistanceTest(i, fileParser, test);
-        }
-
-        test = new MergeSortTest(fileParser);
-        runDistanceTest(-1, fileParser, test);
-
-        for (int i = 1; i < 0; i++) {
-            System.out.println();
-            System.out.println("Running randomised tests");
-            runDistanceTest(i, fileParser, test);
-        }
-
-        test = new QuickSortTest(fileParser);
-        runDistanceTest(-1, fileParser, test);
-
-        for (int i = 1; i < 0; i++) {
-            System.out.println();
-            System.out.println("Running randomised tests");
-            runDistanceTest(i, fileParser, test);
+        for (AbstractTest test : testList) {
+            runDistanceTest(fileParser, test);
         }
 
     }
 
-    private static void runDistanceTest(int randomise, FileParser fileParser, AbstractTest test) {
-        if (randomise >= 0) {
-            fileParser.randomise(randomise);
-        } else {
-            fileParser.resetValues();
-        }
-
+    /**
+     * This internal function will run all the tests with a user predefined number
+     * of times.
+     * 
+     * First perform a test to only sort by distance, then traverse to find the one
+     * with highest rating. Next, prform a test to sort by rating, then distance
+     * within those with the highest rating Compare the results with the benchmark
+     * tests ran previously.
+     * 
+     * @param fileParser
+     * @param test
+     */
+    private static void runDistanceTest(FileParser fileParser, AbstractTest test) {
         int[] distanceTests = { 100, 500, 1000, 1500 };
-        for (int i : distanceTests) {
-            fileParser.retrieveData(true, i);
 
-            // First perform a test to only sort review. Then sort review then distance
-            test.runTests();
+        for (int i = 0; i < NUMBER_OF_TESTS; i++) {
+            for (int j : distanceTests) {
+                fileParser.setTestNum(i);
+                fileParser.setAcceptableRange(j);
+
+                fileParser.retrieveData();
+                test.runTests();
+            }
         }
+
     }
 
 }

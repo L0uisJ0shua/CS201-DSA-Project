@@ -24,7 +24,6 @@ public class Main {
         Map<String, Results> resultsMap = new HashMap<>();
 
         fileParser.retrieveData();
-
         List<AbstractTest> testList = new ArrayList<>();
         testList.add(new JavaBenchmarkTest(fileParser));
         testList.add(new HeapSortTest(fileParser));
@@ -33,6 +32,7 @@ public class Main {
         testList.add(new BucketSortTest(fileParser));
 
         for (int i = 0; i < NUMBER_OF_TESTS; i++) {
+
             fileParser.setCurrTestNum(i);
             System.out.printf("Commencing Test #%d ... %n%n", i + 1);
 
@@ -48,6 +48,7 @@ public class Main {
             System.out.printf("Bucket Sort consistent: %s%n", resultsMap.get("BucketSort").verifyResults());
 
             String bestRestaurant = resultsMap.get("Benchmark").getBestRestaurant();
+
             boolean allAgree = true;
             for (Results res : resultsMap.values()) {
                 if (!res.getBestRestaurant().equals(bestRestaurant)) {

@@ -43,7 +43,6 @@ public class BucketSortTest extends AbstractTest {
 
         if (top_and_close != null && top_and_close.length != 0) {
             results.addBestRestaurant(top_and_close[0]);
-            System.out.println(top_and_close[0].getName());
         }
 
         return sort_1_end - start_time;

@@ -185,7 +185,7 @@ public class FileParser {
     }
 
     public Restaurant[] getFilteredRestaurants() {
-        return filteredRestaurants[currTestNum][currRound];
+        return filteredRestaurants[currTestNum][currRound].clone();
     }
 
     public int getAcceptableRange() {

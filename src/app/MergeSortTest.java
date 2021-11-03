@@ -1,112 +1,73 @@
 package app;
 
-import java.util.*;
-import Utils.FileParser;
 import algo.MergeSort;
+import Utils.*;
 
 public class MergeSortTest extends AbstractTest {
-    private FileParser parser;
     private MergeSort m;
 
-    public MergeSortTest(FileParser fileParser) {
-        this.parser = fileParser;
+    public MergeSortTest(FileParser parser) {
+        super(parser, "MergeSort");
         m = new MergeSort();
     }
 
     @Override
     public void runTests() {
-        System.out.println();
-        System.out.println("======= Commencing Merge Sort Test ========");
 
-        double sortTime1 = performDistanceSort();
-        System.out.println();
-        double sortTime2 = performRatingSort();
+        double currLat = parser.getCurrLat();
+        double currLong = parser.getCurrLong();
 
-        if (parser.getFilteredRestaurants().size() == 0) {
+        double sortTime1 = performDistanceSortThenRating(currLat, currLong);
+        double sortTime2 = performRatingSortThenDistance(currLat, currLong);
+
+        if (parser.getFilteredRestaurants().length == 0) {
+            saveTestResultsDistance(0);
+            saveTestResultsRating(0);
             return;
         }
 
-        Restaurant[] restArr = parser.getFilteredRestaurants().values().toArray(new Restaurant[0]);
-        double javaArrBenchmark = parser.javaArrSort(restArr);
-        System.out.println("================Benchmark with Java=============");
-        System.out.println(String.format("Benchmark rating sorting with Java TimSort: %.10fs", javaArrBenchmark));
-        System.out
-                .println(String.format("Current sort takes %.10f more seconds", (sortTime1 - javaArrBenchmark) / 1000));
-        System.out.println("================================================");
-        System.out.println();
-
-        double javaTreeBenchmark = parser.javaTreeSort();
-        System.out.println("================Benchmark with Java=============");
-        System.out.println(String.format("Benchmark distance sorting with Java RBTree: %.10fs", javaTreeBenchmark));
-        System.out.println(
-                String.format("Current sort takes %.10f more seconds", (sortTime2 - javaTreeBenchmark) / 1000));
-        System.out.println("================================================");
-        System.out.println();
-
-        System.out.println("======= End of Merge Sort Test ========");
-        System.out.println();
+        saveTestResultsDistance(sortTime1);
+        saveTestResultsRating(sortTime2);
     }
 
-    public double performDistanceSort() {
-        Map<String, Restaurant> allRestaurant = parser.getFilteredRestaurants();
-        double cur_lat = parser.getCurrLat();
-        double cur_long = parser.getCurrLong();
-        int n = allRestaurant.size();
-        Restaurant[] array = allRestaurant.values().toArray(new Restaurant[0]);
+    public double performDistanceSortThenRating(double currLat, double currLong) {
+        Restaurant[] filteredRestaurants = parser.getFilteredRestaurants();
+        int n = filteredRestaurants.length;
 
         double start_time = System.currentTimeMillis();
 
-        m.mergeSortByDistance(array, 0, n - 1, cur_lat, cur_long);
+        m.mergeSortByDistance(filteredRestaurants, 0, n - 1, currLat, currLong);
 
         double sort_1_end = System.currentTimeMillis();
 
-        System.out
-                .println(String.format("Total Time take to sort distance = %.10fs", (sort_1_end - start_time) / 1000));
-
-        if (array.length > 0) {
-            double sort_2_end = searchNearestAndBest(array);
-            return sort_2_end - start_time;
-
-        } else {
-            System.out.println("No restaurants found");
+        if (filteredRestaurants.length == 0) {
+            results.addBestRestaurant(null);
+            return sort_1_end - start_time;
         }
-        return sort_1_end - start_time;
+
+        top_rated = filteredRestaurants;
+        double sort_2_end = searchNearestAndBest();
+        return sort_2_end - start_time;
     }
 
-    private double performRatingSort() {
-        Map<String, Restaurant> allRestaurant = parser.getFilteredRestaurants();
-        int n = allRestaurant.size();
-        Restaurant[] array = allRestaurant.values().toArray(new Restaurant[0]);
-        double cur_lat = parser.getCurrLat();
-        double cur_long = parser.getCurrLong();
+    private double performRatingSortThenDistance(double currLat, double currLong) {
+        Restaurant[] filteredRestaurants = parser.getFilteredRestaurants();
+        int n = filteredRestaurants.length;
 
         double start_time = System.currentTimeMillis();
 
-        m.mergeSortByRating(array, 0, n - 1, cur_lat, cur_long);
+        m.mergeSortByRating(filteredRestaurants, 0, n - 1, currLat, currLong);
 
         double sort_1_end = System.currentTimeMillis();
 
-        System.out
-                .println(String.format("Total Time take to sort by rating = %.10fs", (sort_1_end - start_time) / 1000));
-
-        if (array.length > 0) {
-            System.out.println(array[0]);
-            double sort_2_end = System.currentTimeMillis();
-            return sort_2_end - start_time;
-
-        } else {
-            System.out.println("No restaurants found");
+        if (filteredRestaurants.length == 0) {
+            results.addBestRestaurant(null);
+            return sort_1_end - start_time;
         }
-        return sort_1_end - start_time;
+        double sort_2_end = System.currentTimeMillis();
+
+        results.addBestRestaurant(filteredRestaurants[0]);
+        return sort_2_end - start_time;
     }
 
-    private double searchNearestAndBest(Restaurant[] top_rated) {
-        for (Restaurant r : top_rated) {
-            if (r.getStars() >= 5.0) {
-                System.out.println(r);
-                break;
-            }
-        }
-        return System.currentTimeMillis();
-    }
 }

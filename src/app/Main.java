@@ -6,7 +6,7 @@ import Utils.*;
 
 public class Main {
     final static int NUMBER_OF_TESTS = 1;
-    final static int[] distanceTests = { 100, 500, 1000, 1500 };
+    final static int[] distanceTests = { 500, 1000, 1500, 2000 };
 
     public static void main(String[] args) {
         /**
@@ -32,29 +32,35 @@ public class Main {
         testList.add(new QuickSortTest(fileParser));
         testList.add(new BucketSortTest(fileParser));
 
-        for (AbstractTest test : testList) {
-            Results r = runDistanceTest(fileParser, test);
-            resultsMap.put(test.getType(), r);
-        }
+        for (int i = 0; i < NUMBER_OF_TESTS; i++) {
+            System.out.printf("Commencing Test #%d ... %n%n", i);
 
-        System.out.printf("Benchmark consistent: %s%n", resultsMap.get("Benchmark").verifyResults());
-        System.out.printf("Heap Sort consistent: %s%n", resultsMap.get("HeapSort").verifyResults());
-        System.out.printf("Merge Sort consistent: %s%n", resultsMap.get("MergeSort").verifyResults());
-        System.out.printf("Quick Sort consistent: %s%n", resultsMap.get("QuickSort").verifyResults());
-        System.out.printf("Bucket Sort consistent: %s%n", resultsMap.get("BucketSort").verifyResults());
-
-        String bestRestaurant = resultsMap.get("Benchmark").getBestRestaurant();
-        boolean allAgree = true;
-        for (Results res : resultsMap.values()) {
-            if (!res.getBestRestaurant().equals(bestRestaurant)) {
-                allAgree = false;
-                break;
+            for (AbstractTest test : testList) {
+                Results r = runDistanceTest(fileParser, test, i);
+                resultsMap.put(test.getType(), r);
             }
-        }
-        if (!allAgree) {
-            System.out.println("Not the same!");
-        } else {
-            System.out.println("Every sort agrees that this is the best and closest: " + bestRestaurant);
+
+            System.out.printf("Benchmark consistent: %s%n", resultsMap.get("Benchmark").verifyResults());
+            System.out.printf("Heap Sort consistent: %s%n", resultsMap.get("HeapSort").verifyResults());
+            System.out.printf("Merge Sort consistent: %s%n", resultsMap.get("MergeSort").verifyResults());
+            System.out.printf("Quick Sort consistent: %s%n", resultsMap.get("QuickSort").verifyResults());
+            System.out.printf("Bucket Sort consistent: %s%n", resultsMap.get("BucketSort").verifyResults());
+
+            String bestRestaurant = resultsMap.get("Benchmark").getBestRestaurant();
+            boolean allAgree = true;
+            for (Results res : resultsMap.values()) {
+                if (!res.getBestRestaurant().equals(bestRestaurant)) {
+                    allAgree = false;
+                    break;
+                }
+            }
+            if (!allAgree) {
+                System.out.println("Not the same!");
+            } else {
+                System.out.println("Every sort agrees that this is the best and closest: " + bestRestaurant);
+            }
+
+            System.out.printf("End of Test #%d %n%n", i);
         }
 
     }
@@ -70,20 +76,19 @@ public class Main {
      * 
      * @param fileParser
      * @param test
+     * @param i
      */
-    private static Results runDistanceTest(FileParser fileParser, AbstractTest test) {
-        System.out.println(String.format("Commencing %s Sort Tests...", test.getType()));
+    private static Results runDistanceTest(FileParser fileParser, AbstractTest test, int i) {
+        System.out.printf("Commencing %s Sort Tests...", test.getType());
 
-        for (int i = 0; i < NUMBER_OF_TESTS; i++) {
-            for (int j = 0; j < distanceTests.length; j++) {
-                fileParser.setCurrTestNum(i);
-                fileParser.setRound(j);
+        for (int j = 0; j < distanceTests.length; j++) {
+            fileParser.setCurrTestNum(i);
+            fileParser.setRound(j);
 
-                test.runTests();
-            }
+            test.runTests();
         }
 
-        System.out.println(String.format("End of %s Sort Test%n", test.getType()));
+        System.out.printf("End of %s Sort Test%n", test.getType());
 
         return test.getResults();
     }

@@ -80,8 +80,8 @@ public class FileParser {
         for (int i = 1; i < numTests; i++) {
             String randomRest = keysArr.get(R.nextInt(totalSize));
             Restaurant random = allRestaurants.get(randomRest);
-            double randLat = random.getLatitude() + Math.random() * 10;
-            double randLong = random.getLongitude() - Math.random() * 10;
+            double randLat = random.getLatitude() + Math.random() * 3;
+            double randLong = random.getLongitude() - Math.random() * 3;
             latLongPairs.add(new LatLongPair(randLat, randLong));
         }
     }

@@ -39,17 +39,48 @@ public class Results {
      * @param result
      * @return
      */
-    public double[] benchmark(Results result, int testNum, int roundNum) {
-        double benchDistanceFirst = testResultsDistanceThenRating[testNum][roundNum]
-                - result.getBenchmarkExactTime(testNum, roundNum);
-        double benchRatingFirst = testResultsRatingThenDistance[testNum][roundNum]
-                - result.getBenchmarkExactTime(testNum, roundNum);
+    public String[] benchmarkForDistance(Results result, int testNum) {
+        int size = testResultsDistanceThenRating[testNum].length;
+        String benchmarkedArr[] = new String[size];
 
-        return new double[] { benchDistanceFirst, benchRatingFirst };
+        for (int roundNum = 0; roundNum < size; roundNum++) {
+            double benchTime = result.getBenchmarkExactTime(testNum, roundNum);
+            double currTime = testResultsDistanceThenRating[testNum][roundNum];
+            double diff = currTime - benchTime;
+
+            benchmarkedArr[roundNum] = String.format((diff > 0 ? "+" : "") + "%.5f / %.2f%%", diff / 1000,
+                    currTime * 100 / benchTime);
+        }
+
+        return benchmarkedArr;
     }
 
-    public double[][] getBenchmarkArr() {
-        return testResultsDistanceThenRating;
+    public String[] benchmarkForRating(Results result, int testNum) {
+        int size = testResultsRatingThenDistance[testNum].length;
+        String benchmarkedArr[] = new String[size];
+
+        for (int roundNum = 0; roundNum < size; roundNum++) {
+            double benchTime = result.getBenchmarkExactTime(testNum, roundNum);
+            double currTime = testResultsRatingThenDistance[testNum][roundNum];
+            double diff = currTime - benchTime;
+
+            benchmarkedArr[roundNum] = String.format((diff > 0 ? "+" : "") + "%.5f / %.2f%%", diff / 1000,
+                    currTime * 100 / benchTime);
+        }
+
+        return benchmarkedArr;
+    }
+
+    public String[] getBenchmarkArr(int currTestNum) {
+        double[] currBench = testResultsDistanceThenRating[currTestNum];
+        int size = currBench.length;
+        String benchmarkArr[] = new String[size];
+
+        for (int i = 0; i < size; i++) {
+            benchmarkArr[i] = String.format("%.5f / 100.00%%", currBench[i] / 1000);
+        }
+
+        return benchmarkArr;
     }
 
     public double getBenchmarkExactTime(int testNum, int roundNum) {

@@ -117,6 +117,7 @@ public class FileParser {
             }
 
             System.out.println("Total data size involved: " + allRestaurants.size());
+            System.out.printf("Proceed to filter datasets and run tests... Time: %d:%d %n%n", hour, minute);
 
         } catch (IOException e) {
             e.getStackTrace();

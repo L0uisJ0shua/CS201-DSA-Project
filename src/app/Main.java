@@ -7,7 +7,7 @@ import Utils.*;
 
 public class Main {
     final static int NUMBER_OF_TESTS = 3;
-    final static int[] distanceTests = { 500, 1000, 1500 };
+    final static int[] distanceTests = { 500, 1000, 1500, 2000 };
 
     public static void main(String[] args) {
         /**
@@ -114,14 +114,14 @@ public class Main {
         for (int i = 0; i < NUMBER_OF_TESTS; i++) {
             Restaurant[][] restaurants = parser.getAllFilteredRestaurants()[i];
 
-            System.out.printf("Displaying Results for test #%d ... %n", i);
+            System.out.printf("Displaying Results for test #%d ... %n", i + 1);
             int size = distanceTests.length;
 
             String[] headers = new String[1 + size];
             headers[0] = "Sort / Type";
 
             for (int j = 0; j < size; j++) {
-                headers[j + 1] = String.format("Size: %d (s)", restaurants[j].length);
+                headers[j + 1] = String.format("Size = %d (s / %%)", restaurants[j].length);
             }
 
             String[][] table = new String[2 * (resultsMap.size()) - 1][];
@@ -141,11 +141,14 @@ public class Main {
      */
     private static void parseResults(Map<String, Results> resultsMap, String[][] table, int currTestNum) {
         int index = 0;
-        double resultsRating[][];
+        String[] resultsDistance;
+        String[] resultsRating;
 
         // Handle benchmark first
-        double resultsDistance[][] = resultsMap.get("Benchmark").getTestResultsDistanceThenRating();
-        table[index++] = formRows(String.format("%s / Distance First", "Benchmark"), resultsDistance, currTestNum);
+        Results benchmarkResults = resultsMap.get("Benchmark");
+        String benchmarkArr[] = benchmarkResults.getBenchmarkArr(currTestNum);
+
+        table[index++] = formRows(String.format("%s / Distance First", "Benchmark"), benchmarkArr);
 
         for (var entry : resultsMap.entrySet()) {
             String sortName = entry.getKey();
@@ -154,11 +157,11 @@ public class Main {
                 continue;
             }
 
-            resultsDistance = entry.getValue().getTestResultsDistanceThenRating();
-            resultsRating = entry.getValue().getTestResultsRatingThenDistance();
+            resultsDistance = entry.getValue().benchmarkForDistance(benchmarkResults, currTestNum);
+            resultsRating = entry.getValue().benchmarkForRating(benchmarkResults, currTestNum);
 
-            table[index++] = formRows(String.format("%s / Distance First", sortName), resultsDistance, currTestNum);
-            table[index++] = formRows(String.format("%s / Rating First", sortName), resultsRating, currTestNum);
+            table[index++] = formRows(String.format("%s / Distance First", sortName), resultsDistance);
+            table[index++] = formRows(String.format("%s / Rating First", sortName), resultsRating);
         }
     }
 
@@ -167,15 +170,15 @@ public class Main {
      * 
      * @param sortName
      * @param results
-     * @param currTestNum
      * @return
      */
-    private static String[] formRows(String sortName, double[][] results, int currTestNum) {
+    private static String[] formRows(String sortName, String[] results) {
         String[] row = new String[distanceTests.length + 1];
         row[0] = sortName;
 
         for (int i = 1; i < row.length; i++) {
-            row[i] = String.format("%.8f", results[currTestNum][i - 1] / 1000);
+            String timing = results[i - 1];
+            row[i] = timing;
         }
 
         return row;

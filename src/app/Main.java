@@ -74,6 +74,18 @@ public class Main {
 
         displayTestResults(resultsMap, fileParser);
 
+        /**
+         * This next section will explore the time taken to filter and insert data from
+         * the raw JSON file into the respective data structures. In this section,
+         * Java's hashmap, treemap's custom AVLTreeMap and BasicTreeMap implementation
+         * from the textbook.
+         */
+        System.out.printf("Starting tests on data insertion %n%n");
+        runDataStructureComparison();
+        System.out.printf("Ended tests on data insertion %n%n");
+
+        System.out.println("End of all tests");
+
     }
 
     /**
@@ -182,6 +194,19 @@ public class Main {
         }
 
         return row;
+    }
+
+    private static void runDataStructureComparison() {
+
+        AVLTreeMapTest avlTest = new AVLTreeMapTest();
+        avlTest.runTests();
+
+        BasicTreeMapTest basicTreeTest = new BasicTreeMapTest();
+        basicTreeTest.runTests();
+
+        JavaMapTest javaTest = new JavaMapTest();
+        javaTest.runTests();
+
     }
 
 }

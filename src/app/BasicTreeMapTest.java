@@ -1,66 +1,54 @@
 package app;
 
 import java.io.BufferedReader;
-import java.util.*;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
 
 import com.google.gson.*;
 
-import Utils.LatLongComparison;
+import Utils.*;
 import datastruct.BasicTreeMap;
 
 public class BasicTreeMapTest {
-    public static void main(String[] args) {
+    public void runTests() {
         System.out.println("===== Now Running Basic TreeMap Test =====");
 
-        // start here
         Gson gson = new Gson();
-
         Path path = Paths.get(System.getProperty("user.dir") + "/yelp_academic_dataset_business.json");
+        int hour = LocalDateTime.now().getHour();
+        int minute = LocalDateTime.now().getMinute();
+        String dayOfWeek = LocalDateTime.now().getDayOfWeek().toString();
+        String cap = dayOfWeek.substring(0, 1) + dayOfWeek.substring(1).toLowerCase();
 
-        Scanner sc = new Scanner(System.in);
-        BasicTreeMap<String, Restaurant> allRestaurant = new BasicTreeMap<>();
+        BasicTreeMap<String, Restaurant> allRestaurants = new BasicTreeMap<>();
+        DateTimeComparator dateTimeComparator = new DateTimeComparator();
 
-        System.out.print("Acceptable distance(Km) --->  ");
-        double acceptableRange = sc.nextDouble();
-        sc.nextLine();
-        // Hard code your current location's latitude and longitude here
-        System.out.print("We recommend this: 39.778259,-105.417931. Use this? [Y/n] ");
-        String res = sc.nextLine();
-        double currLat;
-        double currLong;
-        System.out.println(res);
-        if (res.equals("n") || res.equals("N")) {
-            System.out.print("Your current location latitude ---> ");
-            currLat = sc.nextDouble();
-
-            System.out.print("Your current location longtitude ---> ");
-            currLong = sc.nextDouble();
-            sc.nextLine();
-        } else {
-            currLat = 39.778259;
-            currLong = -105.417931;
-        }
         try (BufferedReader reader = Files.newBufferedReader(path)) {
             String line;
-            long time = System.currentTimeMillis();
+
+            double startTime = System.currentTimeMillis();
 
             while ((line = reader.readLine()) != null) {
                 Restaurant restaurant = gson.fromJson(line, Restaurant.class);
-                if (LatLongComparison.distanceDifference(currLat, currLong, restaurant.getLatitude(),
-                        restaurant.getLongitude()) <= acceptableRange) {
-                    allRestaurant.put(restaurant.getName(), restaurant);
-                    System.out.println(restaurant.toString());
-                }
 
+                // check if restaurant open
+                try {
+                    String operatingHrs = restaurant.getHours().get(cap);
+                    if (dateTimeComparator.isOpen(operatingHrs, hour, minute)) {
+                        allRestaurants.put(restaurant.getName(), restaurant);
+                    }
+                } catch (Exception e) {
+                    continue;
+                }
             }
 
-            System.out.println("Total time consumed to parse the entire dataset = "
-                    + (System.currentTimeMillis() - time) / 1000.0);
-            System.out.println(allRestaurant.size());
+            double endTime = System.currentTimeMillis();
+
+            System.out.printf("Time taken to parse dataset of size %d: %.10fs %n%n: ", allRestaurants.size(),
+                    (endTime - startTime) / 1000);
 
         } catch (IOException e) {
             e.getStackTrace();

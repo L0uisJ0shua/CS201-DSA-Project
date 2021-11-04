@@ -45,6 +45,9 @@ public class FileParser {
     private int testCount;
     private int currTestNum;
 
+    public FileParser() {
+    }
+
     /**
      * Generate an arrayList of lat-long with the default values and n number of
      * random ones

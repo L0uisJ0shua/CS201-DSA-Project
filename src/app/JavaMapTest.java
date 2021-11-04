@@ -53,7 +53,7 @@ public class JavaMapTest {
 
             double endTime = System.currentTimeMillis();
 
-            System.out.printf("Time taken to parse dataset of size %d: %.10fs %n%n: ", allRestaurants.size(),
+            System.out.printf("%nTime taken to parse dataset of size %d: %.10fs %n%n", allRestaurants.size(),
                     (endTime - startTime) / 1000);
 
         } catch (IOException e) {
@@ -61,6 +61,7 @@ public class JavaMapTest {
         }
 
         System.out.println("===== End of Java TreeMap Test =====");
+        System.out.println();
     }
 
     private void runHashMapTests() {
@@ -97,7 +98,7 @@ public class JavaMapTest {
 
             double endTime = System.currentTimeMillis();
 
-            System.out.printf("Time taken to parse dataset of size %d: %.10fs %n%n: ", allRestaurants.size(),
+            System.out.printf("%nTime taken to parse dataset of size %d: %.10fs %n%n", allRestaurants.size(),
                     (endTime - startTime) / 1000);
 
         } catch (IOException e) {
@@ -105,5 +106,6 @@ public class JavaMapTest {
         }
 
         System.out.println("===== End of Java HashMap Test =====");
+        System.out.println();
     }
 }

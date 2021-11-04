@@ -47,7 +47,7 @@ public class AVLTreeMapTest {
 
             double endTime = System.currentTimeMillis();
 
-            System.out.printf("Time taken to parse dataset of size %d: %.10fs %n%n: ", allRestaurants.size(),
+            System.out.printf("%nTime taken to parse dataset of size %d: %.10fs %n%n", allRestaurants.size(),
                     (endTime - startTime) / 1000);
 
         } catch (IOException e) {
@@ -55,6 +55,7 @@ public class AVLTreeMapTest {
         }
 
         System.out.println("===== End of AVL TreeMap Test =====");
+        System.out.println();
 
     }
 

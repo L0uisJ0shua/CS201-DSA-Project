@@ -26,6 +26,7 @@ public class JavaBenchmarkTest extends AbstractTest {
         double endTime = System.currentTimeMillis();
 
         saveTestResultsDistance(endTime - startTime);
+        saveTestResultsRating(endTime - startTime);
     }
 
     /**

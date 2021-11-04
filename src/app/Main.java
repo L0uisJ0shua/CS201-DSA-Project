@@ -1,11 +1,12 @@
 package app;
 
 import java.util.*;
+import com.github.freva.asciitable.*;
 
 import Utils.*;
 
 public class Main {
-    final static int NUMBER_OF_TESTS = 1;
+    final static int NUMBER_OF_TESTS = 3;
     final static int[] distanceTests = { 500, 1000, 1500 };
 
     public static void main(String[] args) {
@@ -51,10 +52,10 @@ public class Main {
 
             boolean allAgree = true;
             for (Results res : resultsMap.values()) {
-                System.out.println(res.getBestRestaurant());
+                // System.out.println(res.getBestRestaurant());
                 if (!res.getBestRestaurant().equals(bestRestaurant)) {
                     allAgree = false;
-                    // break;
+                    break;
                 }
             }
             if (!allAgree) {
@@ -70,6 +71,8 @@ public class Main {
 
             System.out.printf("End of Test #%d %n%n", i + 1);
         }
+
+        displayTestResults(resultsMap, fileParser);
 
     }
 
@@ -98,6 +101,84 @@ public class Main {
         System.out.printf("End of %s Sort Test%n", test.getType());
 
         return test.getResults();
+    }
+
+    /**
+     * Display the results in a fancyful manner. The headers length is to accomodate
+     * all the tests as well as to add in the index, and the respective timings
+     * 
+     * @param resultsMap
+     */
+    private static void displayTestResults(Map<String, Results> resultsMap, FileParser parser) {
+
+        for (int i = 0; i < NUMBER_OF_TESTS; i++) {
+            Restaurant[][] restaurants = parser.getAllFilteredRestaurants()[i];
+
+            System.out.printf("Displaying Results for test #%d ... %n", i);
+            int size = distanceTests.length;
+
+            String[] headers = new String[1 + size];
+            headers[0] = "Sort / Type";
+
+            for (int j = 0; j < size; j++) {
+                headers[j + 1] = String.format("Size: %d (s)", restaurants[j].length);
+            }
+
+            String[][] table = new String[2 * (resultsMap.size()) - 1][];
+            parseResults(resultsMap, table, i);
+
+            System.out.println(AsciiTable.getTable(headers, table));
+            System.out.println();
+        }
+    }
+
+    /**
+     * Showcase it by concat arrays together. We will have to repeat for the 2
+     * different sort methods (rating then distance and distance then rating)
+     * 
+     * @param resultsMap
+     * @param table
+     */
+    private static void parseResults(Map<String, Results> resultsMap, String[][] table, int currTestNum) {
+        int index = 0;
+        double resultsRating[][];
+
+        // Handle benchmark first
+        double resultsDistance[][] = resultsMap.get("Benchmark").getTestResultsDistanceThenRating();
+        table[index++] = formRows(String.format("%s / Distance First", "Benchmark"), resultsDistance, currTestNum);
+
+        for (var entry : resultsMap.entrySet()) {
+            String sortName = entry.getKey();
+
+            if (sortName.equals("Benchmark")) {
+                continue;
+            }
+
+            resultsDistance = entry.getValue().getTestResultsDistanceThenRating();
+            resultsRating = entry.getValue().getTestResultsRatingThenDistance();
+
+            table[index++] = formRows(String.format("%s / Distance First", sortName), resultsDistance, currTestNum);
+            table[index++] = formRows(String.format("%s / Rating First", sortName), resultsRating, currTestNum);
+        }
+    }
+
+    /**
+     * Utility to create a row for display
+     * 
+     * @param sortName
+     * @param results
+     * @param currTestNum
+     * @return
+     */
+    private static String[] formRows(String sortName, double[][] results, int currTestNum) {
+        String[] row = new String[distanceTests.length + 1];
+        row[0] = sortName;
+
+        for (int i = 1; i < row.length; i++) {
+            row[i] = String.format("%.8f", results[currTestNum][i - 1] / 1000);
+        }
+
+        return row;
     }
 
 }

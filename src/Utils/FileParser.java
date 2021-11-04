@@ -189,6 +189,10 @@ public class FileParser {
         return filteredRestaurants[currTestNum][currRound].clone();
     }
 
+    public Restaurant[][][] getAllFilteredRestaurants() {
+        return filteredRestaurants;
+    }
+
     public int getAcceptableRange() {
         return acceptableRanges[currRound];
     }

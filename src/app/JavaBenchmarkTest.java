@@ -47,6 +47,7 @@ public class JavaBenchmarkTest extends AbstractTest {
         }
 
         Restaurant[] sortedByDistance = sortedMap.values().toArray(new Restaurant[0]);
+        top_rated = sortedByDistance;
 
         // Now, use timSort
         javaArrSort(sortedByDistance);

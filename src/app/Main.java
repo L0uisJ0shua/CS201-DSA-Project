@@ -5,8 +5,8 @@ import java.util.*;
 import Utils.*;
 
 public class Main {
-    final static int NUMBER_OF_TESTS = 3;
-    final static int[] distanceTests = { 500, 1000, 1500, 2000 };
+    final static int NUMBER_OF_TESTS = 1;
+    final static int[] distanceTests = { 500, 1000, 1500 };
 
     public static void main(String[] args) {
         /**
@@ -51,9 +51,10 @@ public class Main {
 
             boolean allAgree = true;
             for (Results res : resultsMap.values()) {
+                System.out.println(res.getBestRestaurant());
                 if (!res.getBestRestaurant().equals(bestRestaurant)) {
                     allAgree = false;
-                    break;
+                    // break;
                 }
             }
             if (!allAgree) {

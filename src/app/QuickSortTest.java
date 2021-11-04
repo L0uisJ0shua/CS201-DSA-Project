@@ -20,11 +20,12 @@ public class QuickSortTest extends AbstractTest {
 
         double sort_1_end = System.currentTimeMillis();
 
+        top_rated = filteredRestaurants;
+
         if (filteredRestaurants.length == 0) {
             return sort_1_end - start_time;
         }
 
-        top_rated = filteredRestaurants;
         double sort_2_end = searchNearestAndBest();
         return sort_2_end - start_time;
     }

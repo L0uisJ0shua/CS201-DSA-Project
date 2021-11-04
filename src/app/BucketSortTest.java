@@ -36,8 +36,8 @@ public class BucketSortTest extends AbstractTest {
 
         double start_time = System.currentTimeMillis();
 
-        Restaurant[] top_rated = b.bucketSortStars(filteredRestaurants);
-        Restaurant[] top_and_close = b.bucketSortDistAndGet(top_rated, currLat, currLong);
+        Restaurant[] topRating = b.bucketSortStars(filteredRestaurants);
+        Restaurant[] top_and_close = b.bucketSortDistAndGet(topRating, currLat, currLong);
 
         double sort_1_end = System.currentTimeMillis();
 

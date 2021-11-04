@@ -80,14 +80,11 @@ public class Restaurant implements Comparable<Restaurant> {
     }
 
     public boolean compareRating(Restaurant r2) {
-        if (this.getStars() > r2.getStars()) {
-            return true;
-        }
-        return false;
+        return Float.compare(stars, r2.getStars()) > 0;
     }
 
     public double calculateDistanceFrom(double origin_lat, double origin_long) {
-        return LatLongComparison.distanceDifference(origin_lat, origin_long, this.latitude, this.longitude);
+        return LatLongComparison.distanceDifference(origin_lat, origin_long, latitude, longitude);
     }
 
     @Override
@@ -96,10 +93,7 @@ public class Restaurant implements Comparable<Restaurant> {
     }
 
     public boolean compareDistance(Restaurant r2, double origin_lat, double origin_long) {
-        if (Double.compare(calculateDistanceFrom(origin_lat, origin_long),
-                r2.calculateDistanceFrom(origin_lat, origin_long)) > 0) {
-            return true;
-        }
-        return false;
+        return Double.compare(calculateDistanceFrom(origin_lat, origin_long),
+                r2.calculateDistanceFrom(origin_lat, origin_long)) > 0;
     }
 }

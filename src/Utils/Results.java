@@ -40,32 +40,32 @@ public class Results {
      * @return
      */
     public String[] benchmarkForDistance(Results result, int testNum) {
-        int size = testResultsDistanceThenRating[testNum].length;
-        String benchmarkedArr[] = new String[size];
-
-        for (int roundNum = 0; roundNum < size; roundNum++) {
-            double benchTime = result.getBenchmarkExactTime(testNum, roundNum);
-            double currTime = testResultsDistanceThenRating[testNum][roundNum];
-            double diff = currTime - benchTime;
-
-            benchmarkedArr[roundNum] = String.format((diff > 0 ? "+" : "") + "%.5f / %.2f%%", diff / 1000,
-                    currTime * 100 / benchTime);
-        }
-
-        return benchmarkedArr;
+        return populateArr(result, testNum, testResultsDistanceThenRating);
     }
 
     public String[] benchmarkForRating(Results result, int testNum) {
-        int size = testResultsRatingThenDistance[testNum].length;
+        return populateArr(result, testNum, testResultsRatingThenDistance);
+    }
+
+    /**
+     * Internal function to make the string needed for display on the console
+     * 
+     * @param result
+     * @param testNum
+     * @param testResults
+     * @return
+     */
+    private String[] populateArr(Results result, int testNum, double[][] testResults) {
+        int size = testResults[testNum].length;
         String benchmarkedArr[] = new String[size];
 
         for (int roundNum = 0; roundNum < size; roundNum++) {
             double benchTime = result.getBenchmarkExactTime(testNum, roundNum);
-            double currTime = testResultsRatingThenDistance[testNum][roundNum];
+            double currTime = testResults[testNum][roundNum];
             double diff = currTime - benchTime;
+            double percentage = benchTime == 0 ? 100 : currTime * 100 / benchTime;
 
-            benchmarkedArr[roundNum] = String.format((diff > 0 ? "+" : "") + "%.5f / %.2f%%", diff / 1000,
-                    currTime * 100 / benchTime);
+            benchmarkedArr[roundNum] = String.format((diff > 0 ? "+" : "") + "%.5f / %.2f%%", diff / 1000, percentage);
         }
 
         return benchmarkedArr;

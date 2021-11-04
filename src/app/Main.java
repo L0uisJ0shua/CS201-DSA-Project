@@ -7,7 +7,7 @@ import Utils.*;
 
 public class Main {
     final static int NUMBER_OF_TESTS = 3;
-    final static int[] distanceTests = { 500, 1000, 1500, 2000 };
+    final static int[] distanceTests = { 500, 1000, 1500 };
 
     public static void main(String[] args) {
         /**

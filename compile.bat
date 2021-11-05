@@ -1,0 +1,1 @@
+javac -d target/classes -cp "src/;lib/*" src/app/Main.java

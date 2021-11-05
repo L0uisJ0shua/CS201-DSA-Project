@@ -96,4 +96,5 @@ public class Restaurant implements Comparable<Restaurant> {
         return Double.compare(calculateDistanceFrom(origin_lat, origin_long),
                 r2.calculateDistanceFrom(origin_lat, origin_long)) > 0;
     }
+
 }

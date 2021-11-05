@@ -199,8 +199,8 @@ public class Main {
     /**
      * Method to run all the Insertion Tests on the Data Structures
      * 
-     * Sorted: Unbalanced Tree Map, AVL Tree Map, Red Black Tree Map, 
-     * Java Default Tree Map (Red Black Tree Implementation), Priority Queue (Heap)
+     * Sorted: Unbalanced Tree Map, AVL Tree Map, Red Black Tree Map, Java Default
+     * Tree Map (Red Black Tree Implementation), Priority Queue (Heap)
      * 
      * Unsorted: Java HashMap
      */
@@ -216,11 +216,12 @@ public class Main {
         RBTreeMapTest rbTest = new RBTreeMapTest();
         rbTest.runTests();
 
+        PriorityQueueTest pqTest = new PriorityQueueTest();
+        pqTest.runTests();
+
         JavaMapTest javaTest = new JavaMapTest();
         javaTest.runTests();
 
-        PriorityQueueTest pqTest = new PriorityQueueTest();
-        pqTest.runTests();
     }
 
 }

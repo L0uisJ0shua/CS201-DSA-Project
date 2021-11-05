@@ -1,7 +1,6 @@
 package app;
 
 import java.io.BufferedReader;
-import java.util.*;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -11,13 +10,12 @@ import java.time.LocalDateTime;
 import com.google.gson.*;
 
 import Utils.DateTimeComparator;
-import Utils.LatLongComparison;
 import datastruct.RBTreeMap;
 
 public class RBTreeMapTest {
 
     public void runTests() {
-        System.out.println("===== Now Running Red Black TreeMap Test =====");
+        System.out.println("===== Now Running Custom Red Black TreeMap Test =====");
 
         Gson gson = new Gson();
         Path path = Paths.get(System.getProperty("user.dir") + "/yelp_academic_dataset_business.json");
@@ -57,7 +55,7 @@ public class RBTreeMapTest {
             e.getStackTrace();
         }
 
-        System.out.println("===== End of Red Black TreeMap Test =====");
+        System.out.println("===== End of Custom Red Black TreeMap Test =====");
         System.out.println();
     }
 

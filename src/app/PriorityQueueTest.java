@@ -11,14 +11,11 @@ import java.time.LocalDateTime;
 import com.google.gson.*;
 
 import Utils.DateTimeComparator;
-import Utils.LatLongComparison;
-import datastruct.BasicTreeMap;
 
 public class PriorityQueueTest {
 
     public void runTests() {
         System.out.println("===== Now Running Java Priority Queue Test =====");
-
 
         Gson gson = new Gson();
         Path path = Paths.get(System.getProperty("user.dir") + "/yelp_academic_dataset_business.json");
@@ -28,10 +25,8 @@ public class PriorityQueueTest {
         String cap = dayOfWeek.substring(0, 1) + dayOfWeek.substring(1).toLowerCase();
 
         PriorityQueue<Restaurant> allRestaurants = new PriorityQueue<>(
-            (r1, r2) -> r1.getName().compareTo(r2.getName())
-        );
+                (r1, r2) -> r1.getName().compareTo(r2.getName()));
         DateTimeComparator dateTimeComparator = new DateTimeComparator();
-
 
         try (BufferedReader reader = Files.newBufferedReader(path)) {
             String line;

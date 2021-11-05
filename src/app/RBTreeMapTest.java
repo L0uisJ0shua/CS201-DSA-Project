@@ -5,27 +5,21 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.LocalDateTime;
 
 import com.google.gson.*;
 
-import Utils.DateTimeComparator;
+import Utils.*;
 import datastruct.RBTreeMap;
 
-public class RBTreeMapTest {
-
+public class RBTreeMapTest extends AbstractInsertionTest {
+    @Override
     public void runTests() {
         System.out.println("===== Now Running Custom Red Black TreeMap Test =====");
 
         Gson gson = new Gson();
         Path path = Paths.get(System.getProperty("user.dir") + "/yelp_academic_dataset_business.json");
-        int hour = LocalDateTime.now().getHour();
-        int minute = LocalDateTime.now().getMinute();
-        String dayOfWeek = LocalDateTime.now().getDayOfWeek().toString();
-        String cap = dayOfWeek.substring(0, 1) + dayOfWeek.substring(1).toLowerCase();
 
         RBTreeMap<String, Restaurant> allRestaurants = new RBTreeMap<>();
-        DateTimeComparator dateTimeComparator = new DateTimeComparator();
 
         try (BufferedReader reader = Files.newBufferedReader(path)) {
             String line;
@@ -37,8 +31,8 @@ public class RBTreeMapTest {
 
                 // check if restaurant open
                 try {
-                    String operatingHrs = restaurant.getHours().get(cap);
-                    if (dateTimeComparator.isOpen(operatingHrs, hour, minute)) {
+                    if (LatLongComparison.distanceDifference(currLat, currLong, restaurant.getLatitude(),
+                            restaurant.getLongitude()) <= acceptableRange) {
                         allRestaurants.put(restaurant.getName(), restaurant);
                     }
                 } catch (Exception e) {

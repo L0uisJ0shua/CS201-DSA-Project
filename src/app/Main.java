@@ -207,20 +207,17 @@ public class Main {
 
     private static void runDataStructureComparison() {
 
-        BasicTreeMapTest basicTreeTest = new BasicTreeMapTest();
-        basicTreeTest.runTests();
+        List<AbstractInsertionTest> insertionTestList = new LinkedList<>();
 
-        AVLTreeMapTest avlTest = new AVLTreeMapTest();
-        avlTest.runTests();
+        insertionTestList.add(new BasicTreeMapTest());
+        insertionTestList.add(new AVLTreeMapTest());
+        insertionTestList.add(new RBTreeMapTest());
+        insertionTestList.add(new PriorityQueueTest());
+        insertionTestList.add(new JavaMapTest());
 
-        RBTreeMapTest rbTest = new RBTreeMapTest();
-        rbTest.runTests();
-
-        PriorityQueueTest pqTest = new PriorityQueueTest();
-        pqTest.runTests();
-
-        JavaMapTest javaTest = new JavaMapTest();
-        javaTest.runTests();
+        for (AbstractInsertionTest test : insertionTestList) {
+            test.runTests();
+        }
 
     }
 

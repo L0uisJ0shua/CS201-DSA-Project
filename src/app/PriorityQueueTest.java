@@ -6,27 +6,21 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.LocalDateTime;
 
 import com.google.gson.*;
 
-import Utils.DateTimeComparator;
+import Utils.*;
 
-public class PriorityQueueTest {
+public class PriorityQueueTest extends AbstractInsertionTest {
 
     public void runTests() {
         System.out.println("===== Now Running Java Priority Queue Test =====");
 
         Gson gson = new Gson();
         Path path = Paths.get(System.getProperty("user.dir") + "/yelp_academic_dataset_business.json");
-        int hour = LocalDateTime.now().getHour();
-        int minute = LocalDateTime.now().getMinute();
-        String dayOfWeek = LocalDateTime.now().getDayOfWeek().toString();
-        String cap = dayOfWeek.substring(0, 1) + dayOfWeek.substring(1).toLowerCase();
 
         PriorityQueue<Restaurant> allRestaurants = new PriorityQueue<>(
                 (r1, r2) -> r1.getName().compareTo(r2.getName()));
-        DateTimeComparator dateTimeComparator = new DateTimeComparator();
 
         try (BufferedReader reader = Files.newBufferedReader(path)) {
             String line;
@@ -38,8 +32,8 @@ public class PriorityQueueTest {
 
                 // check if restaurant open
                 try {
-                    String operatingHrs = restaurant.getHours().get(cap);
-                    if (dateTimeComparator.isOpen(operatingHrs, hour, minute)) {
+                    if (LatLongComparison.distanceDifference(currLat, currLong, restaurant.getLatitude(),
+                            restaurant.getLongitude()) <= acceptableRange) {
                         allRestaurants.add(restaurant);
                     }
                 } catch (Exception e) {
